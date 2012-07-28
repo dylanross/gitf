@@ -8,6 +8,7 @@ public class StandardShoot implements TargettedAction
 	private String name = "Shoot";
 	private Charac shooter;
 	private Charac target;
+	private boolean preAction = true;
 	
 	public void execute(Charac shooter, Charac target)
 	{
@@ -15,9 +16,9 @@ public class StandardShoot implements TargettedAction
 		this.target = target;
 	}
 	
-	public String report()
+	public void report()
 	{
-		return shooter.getName() + " shot " + target.getName() + "!";
+		System.out.println(shooter.getName() + " shot " + target.getName() + "!");
 	}
 	
 	/**
@@ -37,5 +38,9 @@ public class StandardShoot implements TargettedAction
 	public Charac getTargetted()
 	{
 		return target;
+	}
+	
+	public boolean isPreAction() {
+		return preAction;
 	}
 }

@@ -1,6 +1,6 @@
 package gitf.system.item;
 
-import gitf.system.DiceRoll;
+import gitf.system.dice.DiceRoll;
 
 public interface CcWeapon extends Item
 {

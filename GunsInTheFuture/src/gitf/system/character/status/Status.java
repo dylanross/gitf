@@ -1,6 +1,13 @@
 package gitf.system.character.status;
 
+import gitf.system.action.Action;
+import gitf.system.character.Charac;
+
 public interface Status 
 {
-	public enum StatusType { STANCE, ATTRIBUTE_MODIFIER }
+	public String getName();
+	public Charac getOwner();
+	public void respondToAction(Action action);
+	public void addToOwner();
+	public void removeFromOwner();
 }

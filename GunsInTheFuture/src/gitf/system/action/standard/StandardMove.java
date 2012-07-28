@@ -8,6 +8,9 @@ public class StandardMove implements MoveAction
 {
 	private String name = "Move";
 	private Charac mover;
+	
+	private boolean preAction = true;
+	
 	private Area position;
 	private Area destination;
 	
@@ -18,9 +21,9 @@ public class StandardMove implements MoveAction
 		this.destination = destination;
 	}
 	
-	public String report()
+	public void report()
 	{
-		return mover.getName() + " moved from " + position.getName() + " to " + destination.getName();
+		System.out.println(mover.getName() + " moved from " + position.getName() + " to " + destination.getName());
 	}
 	
 	public String getName()
@@ -41,5 +44,9 @@ public class StandardMove implements MoveAction
 	public Area getDestination()
 	{
 		return destination;
+	}
+	
+	public boolean isPreAction() {
+		return preAction;
 	}
 }

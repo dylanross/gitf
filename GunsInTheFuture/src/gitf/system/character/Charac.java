@@ -2,9 +2,12 @@ package gitf.system.character;
 
 import java.util.ArrayList;
 
+import gitf.system.action.Action;
 import gitf.system.item.Item;
 import gitf.system.character.status.DamageTable;
 import gitf.system.character.status.Status;
+import gitf.system.character.feat.Feat;
+import gitf.system.player.Player;
 
 /**
  * An interface specifying what any character within the game should implement
@@ -18,6 +21,8 @@ public interface Charac<Location extends Enum<Location>>
 {	
 	public String getName();
 	
+	public Player getPlayer();
+	
 	public Attributes getAttributes();
 	public Health<Location> getHealth();
 	public DamageTable<Location> getDamageTable();
@@ -25,6 +30,21 @@ public interface Charac<Location extends Enum<Location>>
 	public ArrayList<Item> getEquipped();
 	public ArrayList<Item> getInventory();
 	
+	public ArrayList<Feat> getFeats();
+	
 	public ArrayList<Status> getStatus();
-	public void setStatus(ArrayList<Status> status);
+	
+	public int getActionsRemaining();
+	public void setActionsRemaining(int actionsRemaining);
+	
+	/**
+	 * This method should allow the Character to respond (usually automatically or
+	 * without player choice) to actions. Sometimes a dialogue of options will be 
+	 * given.
+	 * 
+	 * E.g. buff WS due to a feat that activates when attacked by a knife, etc.
+	 * 
+	 * @param action
+	 */
+	public void respondToAction(Action action);
 }

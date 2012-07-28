@@ -5,10 +5,11 @@ public interface Action
 	/**
 	 * Core methods.
 	 */
-	public String report();
+	public void report();
 	
 	/**
 	 * Getters / Setters.
 	 */
 	public String getName();
+	public boolean isPreAction();
 }

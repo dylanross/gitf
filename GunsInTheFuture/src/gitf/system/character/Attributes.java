@@ -10,6 +10,9 @@ package gitf.system.character;
  */
 public interface Attributes 
 {
+	public enum AttributeName { WEAPON_SKILL, BALLISTIC_SKILL, STRENGTH, TOUGHNESS, AGILITY, AWARENESS, INTELLIGENCE, NERVE, CHARISMA, SPEED }
+	
+	public int getAttribute(AttributeName attributeName);
 	public int getWeaponSkill();
 	public int getBallisticSkill();
 	public int getStrength();
@@ -21,6 +24,7 @@ public interface Attributes
 	public int getCharisma();
 	public int getSpeed();
 	
+	public void setAttribute(AttributeName attributeName, int attributeValue);
 	public void setWeaponSkill(int weaponSkill);
 	public void setBallisticSkill(int ballisticSkill);
 	public void setStrength(int strength);

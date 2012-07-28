@@ -9,6 +9,7 @@ public class StandardReload implements ItemAction
 	private String name = "Reload";
 	private Charac charac;
 	private Item item;
+	private boolean preAction = true;
 	
 	/**
 	 * Core methods.
@@ -20,9 +21,9 @@ public class StandardReload implements ItemAction
 		this.item = item;
 	}
 	
-	public String report()
+	public void report()
 	{
-		return this.charac.getName() + " reloaded " + item.getName();
+		System.out.println(this.charac.getName() + " reloaded " + item.getName());
 	}
 	
 	/**
@@ -39,5 +40,9 @@ public class StandardReload implements ItemAction
 	
 	public Item getItem() {
 		return item;
+	}
+	
+	public boolean isPreAction() {
+		return preAction;
 	}
 }

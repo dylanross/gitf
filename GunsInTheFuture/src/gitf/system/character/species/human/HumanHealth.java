@@ -1,7 +1,8 @@
 package gitf.system.character.species.human;
 
-import gitf.system.DiceRoll;
 import gitf.system.character.Health;
+import gitf.system.dice.DiceRoll;
+import gitf.system.dice.StandardDiceRoll;
 
 /**
  * An implementation of the Health interface for Human characters.
@@ -46,7 +47,7 @@ public class HumanHealth implements Health<HumanLocation>
 	
 	public DiceRoll getDiceRoll()
 	{
-		return new DiceRoll(1, 10);
+		return new StandardDiceRoll(1, 10);
 	}
 	
 	public HumanLocation getLocation(int toHitRoll)
@@ -97,16 +98,30 @@ public class HumanHealth implements Health<HumanLocation>
 	
 	public void setLocationDamage(HumanLocation location, int damage)
 	{
+		if (damage > 3) damage = 3;
 		switch(location)
 		{
 			case HEAD :
 				headDamageLevel = damage;
+				break;
 			case TORSO :
 				torsoDamageLevel = damage;
+				break;
 			case ARMS :
 				armsDamageLevel = damage;
+				break;
 			case LEGS :
 				legsDamageLevel = damage;
+				break;
 		}
+	}
+	
+	public String report()
+	{
+		String report = "Legs = " + legsDamageLevel + ", " +
+						"Arms = " + armsDamageLevel + ", " +
+						"Torso = " + torsoDamageLevel + ", " +
+						"Head = " + headDamageLevel;
+		return report;
 	}
 }

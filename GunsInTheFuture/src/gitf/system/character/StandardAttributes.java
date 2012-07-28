@@ -54,6 +54,35 @@ public class StandardAttributes implements Attributes
 	 * Getter methods.
 	 */
 	
+	public int getAttribute(AttributeName attributeName) 
+	{
+		switch(attributeName)
+		{
+			case WEAPON_SKILL :
+				return getWeaponSkill();
+			case BALLISTIC_SKILL :
+				return getBallisticSkill();
+			case STRENGTH :
+				return getStrength();
+			case TOUGHNESS :
+				return getToughness();
+			case AGILITY :
+				return getAwareness();
+			case AWARENESS :
+				return getAwareness();
+			case INTELLIGENCE :
+				return getIntelligence();
+			case NERVE :
+				return getNerve();
+			case CHARISMA :
+				return getCharisma();
+			case SPEED :
+				return getSpeed();
+			default :
+				return -1;
+		}
+	}
+	
 	public int getWeaponSkill() {
 		return attributes[0];
 	}
@@ -88,6 +117,35 @@ public class StandardAttributes implements Attributes
 	/**
 	 * Setter methods.
 	 */
+	
+	public void setAttribute(AttributeName attributeName, int attributeValue) 
+	{
+		switch(attributeName)
+		{
+			case WEAPON_SKILL :
+				setWeaponSkill(attributeValue);
+			case BALLISTIC_SKILL :
+				setBallisticSkill(attributeValue);
+			case STRENGTH :
+				setStrength(attributeValue);
+			case TOUGHNESS :
+				setToughness(attributeValue);
+			case AGILITY :
+				setAwareness(attributeValue);
+			case AWARENESS :
+				setAwareness(attributeValue);
+			case INTELLIGENCE :
+				setIntelligence(attributeValue);
+			case NERVE :
+				setNerve(attributeValue);
+			case CHARISMA :
+				setCharisma(attributeValue);
+			case SPEED :
+				setSpeed(attributeValue);
+			default :
+				break;
+		}
+	}
 	
 	public void setWeaponSkill(int weaponSkill) {
 		attributes[0] = weaponSkill;

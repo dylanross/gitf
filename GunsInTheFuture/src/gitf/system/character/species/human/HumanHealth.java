@@ -18,6 +18,52 @@ public class HumanHealth implements Health<HumanLocation>
 	public int armsDamageLevel;
 	public int legsDamageLevel;
 	
+	public enum DamageDescriptor { 
+									NONE,
+									LIGHT, 
+									HEAVY, 
+									CRITICAL,
+									IRREVERSIBLE;
+									
+									public static DamageDescriptor fromDamageLevel(int damageLevel)
+									{
+										switch (damageLevel)
+										{
+											case 0 :
+												return NONE;
+											case 1 :
+												return LIGHT;
+											case 2 :
+												return HEAVY;
+											case 3 :
+												return CRITICAL;
+											case 4 :
+												return IRREVERSIBLE;
+											default :
+												return CRITICAL;
+										}
+									}
+									
+									public String shorthand()
+									{
+										switch (this)
+										{
+											case NONE :
+												return " ";
+											case LIGHT :
+												return "L";
+											case HEAVY :
+												return "H";
+											case CRITICAL :
+												return "C";
+											case IRREVERSIBLE :
+												return "X";
+											default :
+												return " ";
+										}
+									}
+								 }
+	
 	/**
 	 * 0 argument constructor. Sets all damage levels to 0.
 	 */
@@ -98,7 +144,7 @@ public class HumanHealth implements Health<HumanLocation>
 	
 	public void setLocationDamage(HumanLocation location, int damage)
 	{
-		if (damage > 3) damage = 3;
+		if (damage > 4) damage = 4;
 		switch(location)
 		{
 			case HEAD :
@@ -118,10 +164,10 @@ public class HumanHealth implements Health<HumanLocation>
 	
 	public String report()
 	{
-		String report = "Legs = " + legsDamageLevel + ", " +
-						"Arms = " + armsDamageLevel + ", " +
-						"Torso = " + torsoDamageLevel + ", " +
-						"Head = " + headDamageLevel;
+		String report = "Legs : " + DamageDescriptor.fromDamageLevel(legsDamageLevel).shorthand() + " | " +
+						"Arms : " + DamageDescriptor.fromDamageLevel(armsDamageLevel).shorthand() + " | " +
+						"Torso : " + DamageDescriptor.fromDamageLevel(torsoDamageLevel).shorthand() + " | " +
+						"Head : " + DamageDescriptor.fromDamageLevel(headDamageLevel).shorthand();
 		return report;
 	}
 }

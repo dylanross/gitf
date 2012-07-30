@@ -8,5 +8,7 @@ import gitf.system.character.Charac;
 public interface Player 
 {
 	public Game getGame();
+	public void setGame(Game game);
 	public ArrayList<Charac> getCharacters();
+	public String getName();
 }

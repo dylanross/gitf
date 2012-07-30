@@ -2,6 +2,8 @@ package gitf.system.character.status.standard;
 
 import java.util.ArrayList;
 
+import gitf.system.action.Action;
+import gitf.system.action.standard.StandardAttack;
 import gitf.system.character.Charac;
 import gitf.system.character.status.Stance;
 import gitf.system.character.status.ExclusiveStatus;
@@ -76,6 +78,30 @@ public class StandardStance extends ExclusiveStatus implements Stance
 		else
 		{
 			status.add(new StandardStance(getOwner(), StanceType.PRONE));
+		}
+	}
+	
+	/**
+	 * Respond to actions. See individual responses for descriptions.
+	 */
+	public void respondToAction(Action action)
+	{
+		if (stanceType.equals(StanceType.PRONE) && action instanceof StandardAttack)
+		{
+			StandardAttack standardAttackAction = (StandardAttack) action;
+			if (standardAttackAction.isPreAction())
+			{
+				if (getOwner() == standardAttackAction.getAttacker())
+				{
+					int toHitChance = standardAttackAction.getToHitChance();
+					standardAttackAction.setToHitChance(toHitChance - 2);;
+				}
+				if (getOwner() == standardAttackAction.getDefender())
+				{
+					int toHitChance = standardAttackAction.getToHitChance();
+					standardAttackAction.setToHitChance(toHitChance + 1);
+				}
+			}
 		}
 	}
 	

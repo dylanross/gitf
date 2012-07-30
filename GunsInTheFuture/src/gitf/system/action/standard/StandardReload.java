@@ -1,10 +1,10 @@
 package gitf.system.action.standard;
 
-import gitf.system.action.ItemAction;
+import gitf.system.action.PersonalItemAction;
 import gitf.system.character.Charac;
 import gitf.system.item.Item;
 
-public class StandardReload implements ItemAction
+public class StandardReload implements PersonalItemAction
 {
 	private String name = "Reload";
 	private Charac charac;

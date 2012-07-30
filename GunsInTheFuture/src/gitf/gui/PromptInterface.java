@@ -1,5 +1,11 @@
 package gitf.gui;
 
+/**
+ * Interface defining a terminal- or console- style GUI.
+ * 
+ * @author dylanross
+ *
+ */
 public interface PromptInterface 
 {
 	/**

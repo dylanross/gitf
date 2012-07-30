@@ -2,6 +2,8 @@ package gitf.system.character.status.standard;
 
 import java.util.ArrayList;
 
+import gitf.system.action.Action;
+import gitf.system.action.standard.StandardAttack;
 import gitf.system.character.Charac;
 import gitf.system.character.status.ExclusiveStatus;
 import gitf.system.character.status.Status;
@@ -16,6 +18,23 @@ public class StandardDead extends ExclusiveStatus implements Dead
 	public StandardDead(Charac owner)
 	{
 		super(owner);
+	}
+	
+	public void respondToAction(Action action)
+	{
+		if (action instanceof StandardAttack)
+		{
+			StandardAttack standardAttackAction = (StandardAttack) action;
+			if (standardAttackAction.isPreAction())
+			{
+				if (getOwner() == standardAttackAction.getDefender())
+				{
+					int toHitChance = standardAttackAction.getToHitChance();
+					standardAttackAction.setToHitChance(toHitChance + 3);
+				}
+			}
+		}
+	
 	}
 	
 	/**

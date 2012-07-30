@@ -43,11 +43,12 @@ public class HumanDamageTable implements DamageTable<HumanLocation>
 				new StandardCantRun(target).addToOwner();
 				new StandardStance(target, StanceType.PRONE).addToOwner();
 			}
-			if (damageLevel >= 3) 
+			if (damageLevel == 3) 
 			{
 				new StandardCrawlOnly(target).addToOwner();
 				if (downTest(target) == true) new StandardDown(target).addToOwner();
 			}
+			if (damageLevel > 3) new StandardDown(target).addToOwner();
 		}
 		if (location.equals(HumanLocation.ARMS))
 		{
@@ -60,10 +61,11 @@ public class HumanDamageTable implements DamageTable<HumanLocation>
 					new StandardDrop().execute(target, droppedItem);
 				}
 			}
-			if (damageLevel >= 3)
+			if (damageLevel == 3)
 			{
 				if (downTest(target) == true) new StandardDown(target).addToOwner();
 			}
+			if (damageLevel > 3) new StandardDown(target).addToOwner();
 		}
 		if (location.equals(HumanLocation.TORSO))
 		{
@@ -73,7 +75,8 @@ public class HumanDamageTable implements DamageTable<HumanLocation>
 				new StandardStance(target, StanceType.PRONE).addToOwner();;
 				if (downTest(target) == true) new StandardDown(target).addToOwner();
 			}
-			if (damageLevel >= 3) new StandardDown(target).addToOwner();
+			if (damageLevel == 3) new StandardDown(target).addToOwner();
+			if (damageLevel > 3) new StandardUnconscious(target).addToOwner();
 		}
 		if (location.equals(HumanLocation.HEAD))
 		{

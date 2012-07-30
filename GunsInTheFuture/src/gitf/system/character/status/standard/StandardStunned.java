@@ -4,10 +4,12 @@ import java.util.ArrayList;
 
 import gitf.system.action.Action;
 import gitf.system.action.NewTurn;
+import gitf.system.action.standard.StandardAttack;
 import gitf.system.character.Charac;
 import gitf.system.character.status.Status;
 import gitf.system.character.status.Stunned;
 import gitf.system.character.status.ExclusiveStatus;
+import gitf.system.character.status.standard.StandardStance.StanceType;
 
 public class StandardStunned extends ExclusiveStatus implements Stunned
 {
@@ -26,6 +28,20 @@ public class StandardStunned extends ExclusiveStatus implements Stunned
 	{
 		if (action instanceof NewTurn) turnsRemaining--;
 		if (turnsRemaining <= 0) removeFromOwner();
+	
+		if (action instanceof StandardAttack)
+		{
+			StandardAttack standardAttackAction = (StandardAttack) action;
+			if (standardAttackAction.isPreAction())
+			{
+				if (getOwner() == standardAttackAction.getDefender())
+				{
+					int toHitChance = standardAttackAction.getToHitChance();
+					standardAttackAction.setToHitChance(toHitChance + 2);
+				}
+			}
+		}
+	
 	}
 	
 	/**

@@ -18,6 +18,8 @@ public class StandardDrop implements FreeAction, PersonalItemAction
 		this.item = item;
 		
 		System.out.println(charac.getName() + " dropped " + item.getName() + "!");
+		
+		report();
 	}
 	
 	public void report() {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import gitf.system.action.Action;
 import gitf.system.action.NewTurn;
+import gitf.system.action.standard.StandardAttack;
 import gitf.system.dice.StandardDiceRoll;
 import gitf.system.character.Charac;
 import gitf.system.character.status.ExclusiveStatus;
@@ -36,6 +37,19 @@ public class StandardDown extends ExclusiveStatus implements Down
 				new StandardUnconscious(getOwner()).addToOwner();
 				removeFromOwner();
 				System.out.println(getOwner().getName() + " went from being down to unconscious!");
+			}
+		}
+		
+		if (action instanceof StandardAttack)
+		{
+			StandardAttack standardAttackAction = (StandardAttack) action;
+			if (standardAttackAction.isPreAction())
+			{
+				if (getOwner() == standardAttackAction.getDefender())
+				{
+					int toHitChance = standardAttackAction.getToHitChance();
+					standardAttackAction.setToHitChance(toHitChance + 2);
+				}
 			}
 		}
 	}

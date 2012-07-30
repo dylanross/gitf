@@ -9,6 +9,9 @@ public class StandardGame implements Game
 {
 	private ArrayList<Player> players;
 	private ArrayList<Charac> characters;
+	private StandardTurnSequence turnSequence;
+	
+	private VictoryConditions victoryConditions;
 	
 	private Turn currentTurn;
 	
@@ -17,22 +20,89 @@ public class StandardGame implements Game
 	
 	private int counter = 0;
 	
+	public StandardGame(ArrayList<Charac> characters)
+	{
+		this.victoryConditions = victoryConditions;
+		this.characters = characters;
+		players = new ArrayList<Player>(0);
+		for (int i = 0; i < characters.size(); i++)
+		{
+			if (players.contains(characters.get(i).getPlayer()) == false)
+			{
+				players.add(characters.get(i).getPlayer());
+			}
+		}
+		
+		for (int i = 0; i < players.size(); i++)
+		{
+			players.get(i).setGame(this);
+		}
+		
+		turnSequence = new StandardTurnSequence(characters);
+		turnSequence.order();
+		
+		System.out.println("New game created for : ");
+		for (int i = 0; i < characters.size(); i++) System.out.println(players.get(i).getName());
+		System.out.println();
+		
+		System.out.println("Characters (in Aw order) : ");
+		ArrayList<Charac> characterSequence = turnSequence.getTurnSequence();
+		for (int i = 0; i < characterSequence.size(); i++)
+		{
+			System.out.println(characterSequence.get(i).getName());
+		}
+		
+	}
+	
 	public void start()
 	{
+		System.out.println();
+		System.out.println("GAME STARTED");
+		
 		while(end == false)
 		{
-			try { Thread.sleep(100); }
-			catch (InterruptedException ie) { System.out.println(ie.getMessage()); }
+			System.out.println();
+			System.out.println("Game turn " + (counter + 1) +" :");
+			System.out.println();
 			
-			if (paused == false)
+			boolean gameTurnComplete = false;
+			
+			currentTurn = new StandardTurn(this, turnSequence.getFirstCharacter());
+			
+			while (gameTurnComplete == false && end == false)
 			{
-				currentTurn = new StandardTurn();
-				currentTurn.start();
+				try { Thread.sleep(1000); }
+				catch (InterruptedException ie) { System.out.println(ie.getMessage()); }
+				
+				if (paused == false)
+				{
+					try
+					{
+						System.out.println("It is " + currentTurn.getActiveCharac() + "'s turn!");
+						currentTurn.start();
+						currentTurn = new StandardTurn(this, turnSequence.getNextCharacter(currentTurn.getActiveCharac()));
+					}
+					catch (IndexOutOfBoundsException ioobE)
+					{
+						gameTurnComplete = true;
+					}
+					
+					if (victoryConditions.areConditionsMet() == true) stop();
+				}
+				
 			}
 			
-			System.out.println("Game counter : " + counter);
+			turnSequence = new StandardTurnSequence(characters);
+			turnSequence.order();
 			counter++;
+			
+			System.out.println("--- end of game turn ---");
 		}
+		
+		System.out.println();
+		victoryConditions.report();
+		System.out.println();
+		System.out.println("Game lasted " + counter + " turns.");
 	}
 	
 	public void pause()
@@ -56,5 +126,17 @@ public class StandardGame implements Game
 	
 	public ArrayList<Charac> getCharacters() {
 		return characters;
+	}
+	
+	public VictoryConditions getVictoryConditions() {
+		return victoryConditions;
+	}
+	
+	public void setVictoryConditions(VictoryConditions victoryConditions) {
+		this.victoryConditions = victoryConditions;
+	}
+	
+	public int getLength() {
+		return counter;
 	}
 }

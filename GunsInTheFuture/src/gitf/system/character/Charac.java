@@ -37,6 +37,8 @@ public interface Charac<Location extends Enum<Location>>
 	public int getActionsRemaining();
 	public void setActionsRemaining(int actionsRemaining);
 	
+	public String toString();
+	
 	/**
 	 * This method should allow the Character to respond (usually automatically or
 	 * without player choice) to actions. Sometimes a dialogue of options will be 
@@ -47,4 +49,9 @@ public interface Charac<Location extends Enum<Location>>
 	 * @param action
 	 */
 	public void respondToAction(Action action);
+	
+	public void healthReport();
+	public void statusReport();
+	
+	public boolean isIncapacitated();
 }

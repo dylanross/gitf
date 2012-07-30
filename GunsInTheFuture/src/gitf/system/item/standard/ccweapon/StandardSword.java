@@ -9,7 +9,7 @@ import gitf.system.item.DroppableItem;
 public class StandardSword implements CcWeapon, DroppableItem
 {
 	private String name = "Sword";
-	private DiceRoll damage = new StandardDiceRoll(1, 10);
+	private DiceRoll damage = new StandardDiceRoll(8);
 	
 	public String getName() {
 		return name;

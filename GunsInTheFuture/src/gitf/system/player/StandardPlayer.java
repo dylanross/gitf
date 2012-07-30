@@ -9,6 +9,7 @@ public class StandardPlayer implements Player
 {
 	private Game game;
 	private ArrayList<Charac> characters;
+	private String name;
 	
 	/**
 	 * Getters / Setters.
@@ -19,5 +20,12 @@ public class StandardPlayer implements Player
 	}
 	public ArrayList<Charac> getCharacters() {
 		return characters;
+	}
+	public String getName() {
+		return name;
+	}
+	
+	public void setGame(Game game) {
+		this.game = game;
 	}
 }

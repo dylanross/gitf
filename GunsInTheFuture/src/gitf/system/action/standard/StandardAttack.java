@@ -67,27 +67,30 @@ public class StandardAttack implements TargettedItemAction
 						 "with " + item.getName() + " and hits (" + toHitResult + ") " +
 						 "the " + locationResult + " (" + locationRollResult + ") for " +
 						 damageLevels + " damage levels (" + damageResult + ")!";
-				report();
 				
 				int totalDamage = defender.getHealth().getLocationDamage(locationResult) + damageLevels;	// add this to the amount of damage already sustained
 				defender.getHealth().setLocationDamage(locationResult, totalDamage);						// set the defender's health appropriately
 				defender.getDamageTable().causeEffect(defender, locationResult, totalDamage);				// cause any adverse effects of this new level of damage
 				
 				attacker.setActionsRemaining(attacker.getActionsRemaining() - 1);
+				
+				report();
 			}
 			else	// if attacker missed :
 			{
 				report = attacker.getName() + " attacks " + defender.getName() + " " +
 						 "with " + item.getName() + " and misses (" + toHitResult + ")!";
-				report();
 				
 				attacker.setActionsRemaining(attacker.getActionsRemaining() - 1);
+				
+				report();
 			}
 			
 		}
 		else																				// if the given item was not valid, then :
 		{
 			report = attacker.getName() + " can't attack with " + item.getName();			// generate appropriate report
+			
 			report();
 		}	
 	}
@@ -95,6 +98,10 @@ public class StandardAttack implements TargettedItemAction
 	public void report()
 	{
 		System.out.println(report);
+		System.out.println();
+		System.out.println("--- defender's status ---");
+		defender.healthReport();
+		defender.statusReport();
 	}
 	
 	/**

@@ -19,24 +19,24 @@ public class StandardTurn implements Turn
 	{
 		if (activeCharacter.isIncapacitated())
 		{
-			System.out.println(activeCharacter.getName() + " is incapacitated and can't act this turn!");
+			System.out.println(activeCharacter.getName() + " is incapacitated and couldn't take their turn!");
 			System.out.println();
 		}
 		else
 		{
-			activeCharacter.respondToAction(new NewTurn());
+			new NewTurn(activeCharacter).execute();
 		
 			boolean endTurn = false;
 			
 			do
 			{
-				try { Thread.sleep(2000); }
+				try { Thread.sleep(200); }
 				catch (InterruptedException ie) { System.out.println(ie.getMessage()); }
 				
 				System.out.println();
 				
-				EndTurn endTurnAction = new EndTurn();
-				endTurnAction.execute(activeCharacter);
+				EndTurn endTurnAction = new EndTurn(activeCharacter);
+				endTurnAction.execute();
 				if (endTurnAction.isEndTurn() || game.getVictoryConditions().areConditionsMet())
 				{
 					endTurn = true;

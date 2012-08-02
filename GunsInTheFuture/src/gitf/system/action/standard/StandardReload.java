@@ -1,24 +1,26 @@
 package gitf.system.action.standard;
 
-import gitf.system.action.PersonalItemAction;
+import gitf.system.action.PersonalAction;
+import gitf.system.action.ItemAction;
 import gitf.system.character.Charac;
 import gitf.system.item.Item;
 
-public class StandardReload implements PersonalItemAction
+public class StandardReload implements PersonalAction, ItemAction
 {
 	private String name = "Reload";
 	private Charac charac;
 	private Item item;
 	private boolean preAction = true;
 	
-	/**
-	 * Core methods.
-	 */
-	
-	public void execute(Charac charac, Item item) 
+	public StandardReload(Charac charac, Item item)
 	{
 		this.charac = charac;
 		this.item = item;
+	}
+	
+	public void execute() 
+	{
+		
 	}
 	
 	public void report()

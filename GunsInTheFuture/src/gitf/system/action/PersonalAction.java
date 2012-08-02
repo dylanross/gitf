@@ -10,13 +10,7 @@ import gitf.system.character.Charac;
  *
  */
 public interface PersonalAction extends Action
-{
-	/**
-	 * Core methods.
-	 */
-	
-	public void execute(Charac charac);		// perform some action using the specified character
-	
+{	
 	/**
 	 * Getters / Setters.
 	 */

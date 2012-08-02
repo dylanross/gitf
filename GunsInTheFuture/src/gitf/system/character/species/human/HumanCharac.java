@@ -101,7 +101,7 @@ public class HumanCharac implements Charac<HumanLocation>
 		
 		if (action instanceof NewTurn)
 		{
-			new StandardActionRoll().execute(this);
+			new StandardActionRoll(this).execute();
 		}
 	}
 	

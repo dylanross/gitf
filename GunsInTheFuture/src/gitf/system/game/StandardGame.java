@@ -71,14 +71,13 @@ public class StandardGame implements Game
 			
 			while (gameTurnComplete == false && end == false)
 			{
-				try { Thread.sleep(1000); }
+				try { Thread.sleep(100); }
 				catch (InterruptedException ie) { System.out.println(ie.getMessage()); }
 				
 				if (paused == false)
 				{
 					try
 					{
-						System.out.println("It is " + currentTurn.getActiveCharac() + "'s turn!");
 						currentTurn.start();
 						currentTurn = new StandardTurn(this, turnSequence.getNextCharacter(currentTurn.getActiveCharac()));
 					}

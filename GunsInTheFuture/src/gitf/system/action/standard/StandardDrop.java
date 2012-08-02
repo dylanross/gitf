@@ -1,22 +1,26 @@
 package gitf.system.action.standard;
 
-import gitf.system.action.PersonalItemAction;
+import gitf.system.action.PersonalAction;
+import gitf.system.action.ItemAction;
 import gitf.system.action.FreeAction;
 import gitf.system.character.Charac;
 import gitf.system.item.Item;
 
-public class StandardDrop implements FreeAction, PersonalItemAction
+public class StandardDrop implements FreeAction, PersonalAction, ItemAction
 {
 	private String name = "Drop";
 	private Charac charac;
 	private Item item;
 	private String report;
 	
-	public void execute(Charac charac, Item item)
+	public StandardDrop(Charac charac, Item item)
 	{
 		this.charac = charac;
 		this.item = item;
-		
+	}
+	
+	public void execute()
+	{
 		System.out.println(charac.getName() + " dropped " + item.getName() + "!");
 		
 		report();

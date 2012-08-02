@@ -11,19 +11,24 @@ public class StandardMove implements MoveAction
 	
 	private boolean preAction = true;
 	
-	private Area position;
+	private Area origin;
 	private Area destination;
 	
-	public void execute(Charac mover, Area position, Area destination)
+	public StandardMove(Charac mover, Area origin, Area destination)
 	{
 		this.mover = mover;
-		this.position = position;
+		this.origin = origin;
 		this.destination = destination;
+	}
+	
+	public void execute()
+	{
+	
 	}
 	
 	public void report()
 	{
-		System.out.println(mover.getName() + " moved from " + position.getName() + " to " + destination.getName());
+		System.out.println(mover.getName() + " moved from " + origin.getName() + " to " + destination.getName());
 	}
 	
 	public String getName()
@@ -36,9 +41,9 @@ public class StandardMove implements MoveAction
 		return mover;
 	}
 	
-	public Area getPosition()
+	public Area getOrigin()
 	{
-		return position;
+		return origin;
 	}
 	
 	public Area getDestination()

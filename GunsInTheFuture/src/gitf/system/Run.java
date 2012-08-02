@@ -17,6 +17,7 @@ import gitf.system.game.victory.Deathmatch;;
 public class Run 
 {
 	private static int numberGames = 1;
+	private static boolean drawGraph = false;
 	private static int numberCharacters = 3;
 	
 	private static ArrayList<Integer> metrics = new ArrayList<Integer>(0);
@@ -48,7 +49,10 @@ public class Run
 			}
 		}
 		
-		// drawGraph(metrics);
+		if (drawGraph == true)
+		{
+			drawGraph(metrics);
+		}
 	}
 	
 	public static void drawGraph(ArrayList<Integer> input)

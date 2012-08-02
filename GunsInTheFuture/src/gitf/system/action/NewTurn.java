@@ -15,13 +15,17 @@ public class NewTurn implements PersonalAction, FreeAction
 	private String name = "New Turn";			// name of the action
 	private Charac charac;						// the character to be notified
 	
+	public NewTurn(Charac charac)
+	{
+		this.charac = charac;
+	}
+	
 	/**
 	 * Outputs a message saying which character's turn it is,
 	 * then allows the character to respond.
 	 */
-	public void execute(Charac charac)
+	public void execute()
 	{
-		this.charac = charac;			// set character to be notified of turn
 		report();						// generate report
 		charac.respondToAction(this);	// allow character to respond
 	}

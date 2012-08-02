@@ -13,6 +13,7 @@ public interface Action
 	 * Core methods.
 	 */
 	public void report();
+	public void execute();
 	
 	/**
 	 * Getters / Setters.

@@ -40,7 +40,7 @@ public class StandardBot implements IntelligenceCore
 		
 		if (randomTarget != owner)
 		{
-			new StandardAttack().execute(owner, randomTarget, new StandardSword());
+			new StandardAttack(owner, randomTarget, new StandardSword()).execute();
 		}
 		else
 		{

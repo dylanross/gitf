@@ -21,13 +21,17 @@ public class EndTurn implements PersonalAction, FreeAction
 	
 	private boolean endTurn;						// whether the turn should end after execution of this action
 	
+	public EndTurn(Charac charac)
+	{
+		this.charac = charac;
+	}
+	
 	/**
 	 * Allows the given Charac to decide whether 
 	 * to end the current turn.
 	 */
-	public void execute(Charac charac)
+	public void execute()
 	{
-		this.charac = charac;						// set Charac to be queried
 		preAction = true;							// declare that we are pre-action
 		endTurn = true;								// default to ending turn
 		

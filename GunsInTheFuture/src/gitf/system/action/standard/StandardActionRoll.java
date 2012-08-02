@@ -21,12 +21,15 @@ public class StandardActionRoll implements FreeAction, PersonalAction
 	
 	private int numberOfActions = 0;
 	
-	public void execute(Charac charac)
+	public StandardActionRoll(Charac charac)
 	{
 		this.charac = charac;
 		int speed = charac.getAttributes().getSpeed();
 		dicePool = new StandardDiceRoll(speed, 10);
-		
+	}
+	
+	public void execute()
+	{
 		preAction = true;
 		charac.respondToAction(this);
 		

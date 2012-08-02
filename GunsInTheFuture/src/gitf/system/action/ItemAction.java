@@ -10,13 +10,7 @@ import gitf.system.item.Item;
  *
  */
 public interface ItemAction extends Action
-{
-	/**
-	 * Core methods.
-	 */
-	
-	public void execute(Item item);		// perform some action using the specified item
-	
+{	
 	/**
 	 * Getters / Setters.
 	 */

@@ -1,13 +1,14 @@
 package gitf.system.action.standard;
 
-import gitf.system.action.TargettedItemAction;
+import gitf.system.action.ItemAction;
+import gitf.system.action.TargettedAction;
 import gitf.system.character.Charac;
 import gitf.system.dice.DiceRoll;
 import gitf.system.dice.StandardDiceRoll;
 import gitf.system.item.Item;
 import gitf.system.item.CcWeapon;
 
-public class StandardAttack implements TargettedItemAction
+public class StandardAttack implements TargettedAction, ItemAction
 {
 	private String name = "Attack";
 	
@@ -30,11 +31,15 @@ public class StandardAttack implements TargettedItemAction
 	
 	private String report;
 	
-	public void execute(Charac attacker, Charac defender, Item item)
+	public StandardAttack(Charac attacker, Charac defender, Item item)
 	{
 		this.attacker = attacker;										// store attacker
 		this.defender = defender; 										// store defender
-		
+		this.item = item;												// store item
+	}
+	
+	public void execute()
+	{
 		if (item instanceof CcWeapon)									// check the given item is valid, then :
 		{
 			CcWeapon ccWeapon = (CcWeapon) item;						// cast item to CcWeapon

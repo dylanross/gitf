@@ -7,7 +7,6 @@ import gitf.system.dice.StandardDiceRoll;
 import gitf.system.action.Action;
 import gitf.system.item.CcWeapon;
 import gitf.system.item.HandHeld;
-import gitf.system.item.ItemResponder;
 import gitf.system.item.quality.Quality;
 
 public class StandardSword implements CcWeapon, HandHeld
@@ -16,17 +15,18 @@ public class StandardSword implements CcWeapon, HandHeld
 	private DiceRoll damage = new StandardDiceRoll(8);
 	private int slots = 1;
 	private ArrayList<Quality> qualities;
-	private ItemResponder responder;
 	
 	public StandardSword()
 	{
-		qualities = new ArrayList<Quality>(0);		// item has no qualities
-		responder = new ItemResponder(this);		// use standard item responder
+		qualities = new ArrayList<Quality>(0);				// item has no qualities
 	}
 	
 	public void respondToAction(Action action) 
 	{
-		responder.respondToAction(action);
+		for (int i = 0; i < qualities.size(); i++) 			// count through qualities :
+		{
+			qualities.get(i).respondToAction(action);		// allow each quality to respond in turn
+		}
 	}
 	public String getName() {
 		return name;

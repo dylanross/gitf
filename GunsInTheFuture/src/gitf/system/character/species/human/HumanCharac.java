@@ -3,13 +3,14 @@ package gitf.system.character.species.human;
 import java.util.ArrayList;
 
 import gitf.system.action.Action;
+import gitf.system.action.standard.NewTurn;
+import gitf.system.action.standard.StandardActionRoll;
 import gitf.system.character.Charac;
 import gitf.system.character.Attributes;
 import gitf.system.character.StandardAttributes;
 import gitf.system.character.Equipped;
 import gitf.system.character.Inventory;
 import gitf.system.character.Health;
-import gitf.system.character.CharacterResponder;
 import gitf.system.character.status.DamageTable;
 import gitf.system.character.status.Status;
 import gitf.system.character.status.Dead;
@@ -23,6 +24,7 @@ import gitf.system.character.ai.IntelligenceCore;
 import gitf.system.character.ai.StandardBot;
 import gitf.system.player.Player;
 import gitf.system.player.BotPlayer;
+import gitf.system.item.standard.ccweapon.StandardSword;
 
 /**
  * An implementation of the Charac interface for normal human characters.
@@ -37,7 +39,6 @@ public class HumanCharac implements Charac<HumanLocation>
 	private Player player;										// the player with control over the character
 	
 	private IntelligenceCore intelCore;							// the intelligence core of the character
-	private CharacterResponder responder;						// the responder used to process responses to external actions
 	
 	private Attributes attributes;								// the statline of the character
 	
@@ -63,7 +64,6 @@ public class HumanCharac implements Charac<HumanLocation>
 		name = HumanNameGenerator.generate();													// set to random name
 		player = new BotPlayer();																// give character a Bot player
 		intelCore = new StandardBot(this);														// give character a standard Bot intelligence core
-		responder = new HumanResponder(this);													// give character a HumanResponder action responder
 		try 
 		{
 			attributes = new StandardAttributes(new int[] { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 });	// set all attributes to 4
@@ -76,6 +76,7 @@ public class HumanCharac implements Charac<HumanLocation>
 		equipped = new HumanEquipped(this);														// creates empty equipped
 		
 		new StandardStance(this, StanceType.STANDING).addToOwner();								// give HumanCharac a Standing Stance status
+		equipped.equip(new StandardSword());													// give HumanCharac a StandardSword
 	}
 	
 	/**
@@ -83,7 +84,24 @@ public class HumanCharac implements Charac<HumanLocation>
 	 */
 	public void respondToAction(Action action)
 	{
-		responder.respondToAction(action); 						// ask the responder object to handle the action
+		equipped.respondToAction(action);
+		
+		for (int i = 0; i < feats.size(); i ++)							// count through Feats :
+		{
+			feats.get(i).respondToAction(action);						// allow Feats to respond
+		}
+		
+		for (int i = 0; i < status.size(); i ++)						// count through Statuses :
+		{
+			status.get(i).respondToAction(action);						// allow Statuses to respond
+		}
+		
+		intelCore.respondToAction(action);								// allow the intelligence core to respond
+		
+		if (action instanceof NewTurn)
+		{
+			new StandardActionRoll(this).execute();						// roll for actions
+		}
 	}
 	
 	/**
@@ -163,9 +181,6 @@ public class HumanCharac implements Charac<HumanLocation>
 	}
 	public IntelligenceCore getIntelligenceCore() {
 		return intelCore;
-	}
-	public CharacterResponder getResponder() {
-		return responder;
 	}
 	public Attributes getAttributes() {
 		return attributes;

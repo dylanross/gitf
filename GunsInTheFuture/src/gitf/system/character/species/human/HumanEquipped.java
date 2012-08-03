@@ -58,7 +58,11 @@ public class HumanEquipped implements Equipped
 	{
 		for (int i = 0; i < items.size(); i++)				// count through all items
 		{
-			if (items.get(i) == item) items.remove(i);		// remove references to the specified item
+			if (items.get(i) == item)
+			{
+				items.remove(i);		// remove references to the specified item
+				i--;
+			}
 		}
 	}
 	
@@ -79,6 +83,7 @@ public class HumanEquipped implements Equipped
 			if (items.get(i) instanceof HumanFist)						// if the item is a HumanFist :
 			{
 				items.remove(i);										// remove the HumanFist
+				i--;
 			}
 		}
 		

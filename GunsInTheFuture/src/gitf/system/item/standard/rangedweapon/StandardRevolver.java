@@ -6,7 +6,6 @@ import gitf.system.dice.DiceRoll;
 import gitf.system.dice.StandardDiceRoll;
 import gitf.system.action.Action;
 import gitf.system.item.RangedWeapon;
-import gitf.system.item.ItemResponder;
 import gitf.system.item.quality.Quality;
 
 public class StandardRevolver implements RangedWeapon 
@@ -15,17 +14,18 @@ public class StandardRevolver implements RangedWeapon
 	private int range = 15;
 	private DiceRoll damage = new StandardDiceRoll(1, 10);
 	private ArrayList<Quality> qualities;
-	private ItemResponder responder;
 	
 	public StandardRevolver()
 	{
 		qualities = new ArrayList<Quality>(0);
-		responder = new ItemResponder(this);
 	}
 	
 	public void respondToAction(Action action) 
 	{
-		responder.respondToAction(action);
+		for (int i = 0; i < qualities.size(); i++)			// count through qualities : 
+		{
+			qualities.get(i).respondToAction(action);		// allow each quality to respond in turn
+		}
 	}
 	
 	public String getName() {

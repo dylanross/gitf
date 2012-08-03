@@ -7,19 +7,16 @@ import gitf.system.dice.DiceRoll;
 import gitf.system.dice.StandardDiceRoll;
 import gitf.system.character.UnarmedAttack;
 import gitf.system.item.quality.Quality;
-import gitf.system.item.ItemResponder;
 
 public class HumanFist implements UnarmedAttack
 {
 	private String name = "Fist";							// the name of this weapon
 	private DiceRoll damage = new StandardDiceRoll(4);		// the dice roll for this weapon's damage
 	private ArrayList<Quality> qualities;					// qualities of this item
-	private ItemResponder responder;						// responds to actions on behalf of this Item
 	
 	public HumanFist()
 	{
 		qualities = new ArrayList<Quality>(0);				// item has no qualities
-		responder = new ItemResponder(this);				// use standard item responder
 	}
 	
 	/**
@@ -27,7 +24,10 @@ public class HumanFist implements UnarmedAttack
 	 */
 	public void respondToAction(Action action) 
 	{
-		responder.respondToAction(action);
+		for (int i = 0; i < qualities.size(); i++) 			// count through qualities :
+		{
+			qualities.get(i).respondToAction(action);		// allow each quality to respond in turn
+		}
 	}
 	
 	public String getName() {

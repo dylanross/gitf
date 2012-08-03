@@ -7,6 +7,8 @@ import gitf.system.action.standard.EndTurn;
 import gitf.system.action.standard.StandardAttack;
 import gitf.system.character.Charac;
 import gitf.system.dice.StandardDiceRoll;
+import gitf.system.item.CcWeapon;
+import gitf.system.item.Equippable;
 import gitf.system.item.standard.ccweapon.StandardSword;
 
 public class StandardBot implements IntelligenceCore 
@@ -40,7 +42,16 @@ public class StandardBot implements IntelligenceCore
 		
 		if (randomTarget != owner)
 		{
-			new StandardAttack(owner, randomTarget, new StandardSword()).execute();
+			ArrayList<Equippable> equippedItems = owner.getEquipped().getItems();
+			CcWeapon ccWeapon = null;
+			
+			for (int i = 0; i < equippedItems.size(); i++)
+			{
+				if (equippedItems.get(i) instanceof CcWeapon) ccWeapon = (CcWeapon) equippedItems.get(i);
+				break;
+			}
+			
+			new StandardAttack(owner, randomTarget, ccWeapon).execute();
 		}
 		else
 		{

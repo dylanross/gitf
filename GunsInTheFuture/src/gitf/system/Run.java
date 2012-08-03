@@ -16,11 +16,11 @@ import gitf.system.game.victory.Deathmatch;;
  */
 public class Run 
 {
-	private static int numberGames = 1;
-	private static boolean drawGraph = false;
-	private static int numberCharacters = 3;
+	private static int numberGames = 1;				// number of games in the simulation
+	private static boolean drawGraph = false;		// whether to draw a frequency distribution of game length at the end of the simulation
+	private static int numberCharacters = 3;		// the number of characters in the simulation
 	
-	private static ArrayList<Integer> metrics = new ArrayList<Integer>(0);
+	private static ArrayList<Integer> metrics = new ArrayList<Integer>(0);		// frequency distribution of game lengths
 	
 	public static void main(String[] args)
 	{

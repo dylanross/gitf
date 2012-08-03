@@ -26,8 +26,8 @@ public class NewTurn implements PersonalAction, FreeAction
 	 */
 	public void execute()
 	{
-		report();						// generate report
-		charac.respondToAction(this);	// allow character to respond
+		report();							// generate report
+		charac.respondToAction(this);		// allow character to respond to NewTurn action
 	}
 	
 	/**

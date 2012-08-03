@@ -21,9 +21,14 @@ public class EndTurn implements PersonalAction, FreeAction
 	
 	private boolean endTurn;						// whether the turn should end after execution of this action
 	
+	/**
+	 * One argument (Charac) constructor. Specifies the character to whom
+	 * this EndTurn action refers.
+	 * @param charac
+	 */
 	public EndTurn(Charac charac)
 	{
-		this.charac = charac;
+		this.charac = charac;						// assign charac
 	}
 	
 	/**

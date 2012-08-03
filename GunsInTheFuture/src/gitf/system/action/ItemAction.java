@@ -1,10 +1,9 @@
 package gitf.system.action;
 
-import gitf.system.character.Charac;
 import gitf.system.item.Item;
 
 /**
- * Interface used by actions which involve only an Item.
+ * Interface used by actions which involve an Item.
  * 
  * @author dylanross
  *

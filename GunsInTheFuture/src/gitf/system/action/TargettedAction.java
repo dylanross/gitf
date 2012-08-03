@@ -15,6 +15,6 @@ public interface TargettedAction extends Action
 	 * Getters / Setters.
 	 */
 	
-	public Charac getTargetter();
-	public Charac getTargetted();
+	public Charac getTargetter();	// the Charac doing the targetting
+	public Charac getTargetted();	// the Charac being targetted
 }

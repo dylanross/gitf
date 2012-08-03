@@ -3,7 +3,7 @@ package gitf.system.character;
 import java.util.ArrayList;
 
 import gitf.system.action.Action;
-import gitf.system.item.Item;
+import gitf.system.character.ai.IntelligenceCore;
 import gitf.system.character.status.DamageTable;
 import gitf.system.character.status.Status;
 import gitf.system.character.feat.Feat;
@@ -19,39 +19,34 @@ import gitf.system.player.Player;
  */
 public interface Charac<Location extends Enum<Location>>
 {	
-	public String getName();
+	public String getName();									// returns the name of the character
 	
-	public Player getPlayer();
+	public Player getPlayer();									// returns the Player with control of the character
 	
-	public Attributes getAttributes();
-	public Health<Location> getHealth();
-	public DamageTable<Location> getDamageTable();
+	public IntelligenceCore getIntelligenceCore();				// returns the character's intelligence core
 	
-	public ArrayList<Item> getEquipped();
-	public ArrayList<Item> getInventory();
+	public Attributes getAttributes();							// returns the character's attributes
+	public Health<Location> getHealth();						// returns the Health object associated with this character
+	public DamageTable<Location> getDamageTable();				// returns the DamageTable associated with this character
 	
-	public ArrayList<Feat> getFeats();
+	public Equipped getEquipped();								// returns the Equipped object associated with this character
+	public Inventory getInventory();							// returns the Inventory associated with this character
 	
-	public ArrayList<Status> getStatus();
+	public ArrayList<Feat> getFeats();							// returns a list of this character's Feats
 	
-	public int getActionsRemaining();
-	public void setActionsRemaining(int actionsRemaining);
+	public ArrayList<Status> getStatus();						// returns a list of this character's Statuses
 	
-	public String toString();
+	public int getActionsRemaining();							// returns the number of actions this character has remaining
+	public void setActionsRemaining(int actionsRemaining);		// sets the number of actions this character has remaining
 	
-	/**
-	 * This method should allow the Character to respond (usually automatically or
-	 * without player choice) to actions. Sometimes a dialogue of options will be 
-	 * given.
-	 * 
-	 * E.g. buff WS due to a feat that activates when attacked by a knife, etc.
-	 * 
-	 * @param action
-	 */
-	public void respondToAction(Action action);
+	public void respondToAction(Action action);					// allows the character to respond to external actions
 	
-	public void healthReport();
-	public void statusReport();
+	public String toString();									// returns a String representation of this character
 	
-	public boolean isIncapacitated();
+	public void healthReport();									// returns a report of this Charac's health
+	public void statusReport();									// returns a report of this Charac's statuses
+	public void equippedReport();								// returns a report of this Charac's equipped items
+	public void inventoryReport();								// returns a report of this Charac's inventory
+	
+	public boolean isIncapacitated();							// returns true if the character is unable to act
 }

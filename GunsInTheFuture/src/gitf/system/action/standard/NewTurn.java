@@ -1,5 +1,7 @@
-package gitf.system.action;
+package gitf.system.action.standard;
 
+import gitf.system.action.FreeAction;
+import gitf.system.action.PersonalAction;
 import gitf.system.character.Charac;
 
 /**
@@ -26,7 +28,7 @@ public class NewTurn implements PersonalAction, FreeAction
 	 */
 	public void execute()
 	{
-		report();							// generate report
+		report();											// generate report
 		charac.respondToAction(this);		// allow character to respond to NewTurn action
 	}
 	

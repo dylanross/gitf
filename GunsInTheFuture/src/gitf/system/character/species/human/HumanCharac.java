@@ -3,12 +3,13 @@ package gitf.system.character.species.human;
 import java.util.ArrayList;
 
 import gitf.system.action.Action;
-import gitf.system.action.NewTurn;
-import gitf.system.action.standard.StandardActionRoll;
 import gitf.system.character.Charac;
 import gitf.system.character.Attributes;
 import gitf.system.character.StandardAttributes;
+import gitf.system.character.Equipped;
+import gitf.system.character.Inventory;
 import gitf.system.character.Health;
+import gitf.system.character.CharacterResponder;
 import gitf.system.character.status.DamageTable;
 import gitf.system.character.status.Status;
 import gitf.system.character.status.Dead;
@@ -20,10 +21,8 @@ import gitf.system.character.status.standard.StandardStance.StanceType;
 import gitf.system.character.feat.Feat;
 import gitf.system.character.ai.IntelligenceCore;
 import gitf.system.character.ai.StandardBot;
-import gitf.system.item.Item;
 import gitf.system.player.Player;
 import gitf.system.player.BotPlayer;
-import gitf.system.dice.StandardDiceRoll;
 
 /**
  * An implementation of the Charac interface for normal human characters.
@@ -33,89 +32,93 @@ import gitf.system.dice.StandardDiceRoll;
  */
 public class HumanCharac implements Charac<HumanLocation>
 {
-	private String name;
+	private String name;										// the name of the character
 	
-	private Player player;
+	private Player player;										// the player with control over the character
 	
-	private IntelligenceCore intelCore;
+	private IntelligenceCore intelCore;							// the intelligence core of the character
+	private CharacterResponder responder;						// the responder used to process responses to external actions
 	
-	private Attributes attributes;
+	private Attributes attributes;								// the statline of the character
 	
-	private Health health;
-	private DamageTable damageTable = new HumanDamageTable();
+	private Health health;										// the Health object representing the health of the character
+	private DamageTable damageTable = new HumanDamageTable();	// the DamageTable object used when damaging the character
 	
-	private ArrayList<Status> status;
+	private ArrayList<Status> status;							// a list of statuses attributed to the character
 	
-	private ArrayList<Feat> feats;
+	private ArrayList<Feat> feats;								// a list of feats owned by the character
 	
-	private ArrayList<Item>	equipped;
-	private ArrayList<Item>	inventory;
+	private Inventory inventory;								// the Inventory object representing the inventory of the character
+	private Equipped equipped;									// the Equipped object representing the items the character has equipped
 	
-	private int actionsRemaining;
+	private int actionsRemaining;								// the number of actions the character has remaining
 	
 	/**
 	 * Zero argument constructor. Produces generic human character
-	 * with no equipment and no wounds.
+	 * with no equipment and no wounds. The character produced is a bot -
+	 * it is entirely computer controlled.
 	 */
 	public HumanCharac()
 	{
-		player = new BotPlayer();
-		name = HumanNameGenerator.generate();													// set to boring name
-		intelCore = new StandardBot(this);
-		try
+		name = HumanNameGenerator.generate();													// set to random name
+		player = new BotPlayer();																// give character a Bot player
+		intelCore = new StandardBot(this);														// give character a standard Bot intelligence core
+		responder = new HumanResponder(this);													// give character a HumanResponder action responder
+		try 
 		{
-			attributes = new StandardAttributes(new int[] { 4, 4, 4, 4, 4, new StandardDiceRoll(10).roll(), 4, 4, 4, 4 });	// set all attributes to 4
+			attributes = new StandardAttributes(new int[] { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 });	// set all attributes to 4
 		}
-		catch (Exception e)
-		{
-			attributes = new StandardAttributes();												// this should never be reached,
-		}																						// but sets all attributes to 0
+		catch (Exception e) { }
 		health = new HumanHealth(0, 0, 0, 0);													// sets all damage levels to 0
 		feats = new ArrayList<Feat>(0);															// creates empty feats list
 		status = new ArrayList<Status>(0);														// creates empty status lists
-		equipped = new ArrayList<Item>(0);														// creates empty equipped list
-		inventory = new ArrayList<Item>(0);														// creates empty inventory list
+		inventory = new HumanInventory(this);													// creates empty inventory
+		equipped = new HumanEquipped(this);														// creates empty equipped
 		
 		new StandardStance(this, StanceType.STANDING).addToOwner();								// give HumanCharac a Standing Stance status
 	}
 	
 	/**
-	 * Respond to an action.
+	 * Allows the character to respond to an external action.
 	 */
 	public void respondToAction(Action action)
 	{
-		for (int i = 0; i < equipped.size(); i ++)
-		{
-			equipped.get(i).respondToAction(action);
-		}
-		for (int i = 0; i < feats.size(); i ++)
-		{
-			feats.get(i).respondToAction(action);
-		}
-		for (int i = 0; i < status.size(); i ++)
-		{
-			status.get(i).respondToAction(action);
-		}
-		
-		intelCore.respondToAction(action);
-		
-		if (action instanceof NewTurn)
-		{
-			new StandardActionRoll(this).execute();
-		}
+		responder.respondToAction(action); 						// ask the responder object to handle the action
 	}
 	
+	/**
+	 * Prints out a report of the character's health.
+	 */
 	public void healthReport()
 	{
-		System.out.println(health.report());
+		System.out.println(health.report());					// print the Health object's report
 	}
 	
+	/**
+	 * Prints out a report of the character's statuses.
+	 */
 	public void statusReport()
 	{
-		for (int i = 0; i < status.size(); i++)
+		for (int i = 0; i < status.size(); i++)					// count through Statuses :
 		{
-			System.out.println("- " + status.get(i).getName());
+			System.out.println("- " + status.get(i).getName());	// print the Status's name
 		}
+	}
+	
+	/**
+	 * Prints out a report of the character's equipped items.
+	 */
+	public void equippedReport()
+	{
+		System.out.println(equipped.report());					// print the Equipped object's report
+	}
+	
+	/**
+	 * Prints out a report of the character's inventory.
+	 */
+	public void inventoryReport()
+	{
+		System.out.println(inventory.report());					// print the Inventory object's report
 	}
 	
 	/**
@@ -148,11 +151,21 @@ public class HumanCharac implements Charac<HumanLocation>
 		return result;
 	}
 	
+	/**
+	 * Getters / Setters.
+	 */
+	
 	public String getName() {
 		return name;
 	}
 	public Player getPlayer() {
 		return player;
+	}
+	public IntelligenceCore getIntelligenceCore() {
+		return intelCore;
+	}
+	public CharacterResponder getResponder() {
+		return responder;
 	}
 	public Attributes getAttributes() {
 		return attributes;
@@ -169,10 +182,10 @@ public class HumanCharac implements Charac<HumanLocation>
 	public ArrayList<Status> getStatus() {
 		return status;
 	}
-	public ArrayList<Item> getEquipped() {
+	public Equipped getEquipped() {
 		return equipped;
 	}
-	public ArrayList<Item> getInventory() {
+	public Inventory getInventory() {
 		return inventory;
 	}
 	public int getActionsRemaining() {

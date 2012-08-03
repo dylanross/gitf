@@ -22,6 +22,9 @@ public class Run
 	
 	private static ArrayList<Integer> metrics = new ArrayList<Integer>(0);		// frequency distribution of game lengths
 	
+	/**
+	 * Starts GITF.
+	 */
 	public static void main(String[] args)
 	{
 		for (int i = 0; i < 50; i++)

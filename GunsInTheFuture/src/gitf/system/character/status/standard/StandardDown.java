@@ -3,7 +3,7 @@ package gitf.system.character.status.standard;
 import java.util.ArrayList;
 
 import gitf.system.action.Action;
-import gitf.system.action.NewTurn;
+import gitf.system.action.standard.NewTurn;
 import gitf.system.action.standard.StandardAttack;
 import gitf.system.dice.StandardDiceRoll;
 import gitf.system.character.Charac;

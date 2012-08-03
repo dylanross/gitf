@@ -9,6 +9,7 @@ import gitf.system.character.status.standard.*;
 import gitf.system.character.status.standard.StandardStance.StanceType;
 import gitf.system.dice.StandardDiceRoll;
 import gitf.system.item.Item;
+import gitf.system.item.Equippable;
 import gitf.system.item.HandHeld;
 
 /**
@@ -95,7 +96,7 @@ public class HumanDamageTable implements DamageTable<HumanLocation>
 	
 	public Item getRandomHeldItem(Charac<HumanLocation> target)
 	{
-		ArrayList<Item> equippedItems = target.getEquipped();
+		ArrayList<Equippable> equippedItems = target.getEquipped().getItems();
 		ArrayList<Item> heldItems = new ArrayList<Item>(0);
 		for (int i = 0; i < equippedItems.size(); i++)
 		{

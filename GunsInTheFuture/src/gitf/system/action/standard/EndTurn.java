@@ -1,5 +1,7 @@
-package gitf.system.action;
+package gitf.system.action.standard;
 
+import gitf.system.action.FreeAction;
+import gitf.system.action.PersonalAction;
 import gitf.system.character.Charac;
 
 /**

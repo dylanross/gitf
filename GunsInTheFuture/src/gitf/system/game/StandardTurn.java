@@ -1,7 +1,7 @@
 package gitf.system.game;
 
-import gitf.system.action.NewTurn;
-import gitf.system.action.EndTurn;
+import gitf.system.action.standard.EndTurn;
+import gitf.system.action.standard.NewTurn;
 import gitf.system.character.Charac;
 
 public class StandardTurn implements Turn

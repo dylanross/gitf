@@ -1,7 +1,6 @@
 package gitf.system.action.standard;
 
-import gitf.system.action.FreeAction;
-import gitf.system.action.PersonalAction;
+import gitf.system.action.TurnAction;
 import gitf.system.character.Charac;
 
 /**
@@ -12,10 +11,13 @@ import gitf.system.character.Charac;
  * @author dylanross
  *
  */
-public class NewTurn implements PersonalAction, FreeAction
+public class NewTurn implements TurnAction
 {
 	private String name = "New Turn";			// name of the action
 	private Charac charac;						// the character to be notified
+	private int actionCost = 0;					// this action costs nothing to perform
+	private boolean newTurn = true;				// this action proposes the start of a new turn
+	private boolean endTurn = false;			// this action does not propose the end of the current turn
 	
 	public NewTurn(Charac charac)
 	{
@@ -51,5 +53,23 @@ public class NewTurn implements PersonalAction, FreeAction
 	}
 	public boolean isPreAction() {
 		return false;
+	}
+	public boolean isEndTurn() {
+		return endTurn;
+	}
+	public boolean isNewTurn() {
+		return newTurn;
+	}
+	public void setEndTurn(boolean endTurn) {
+		this.endTurn = endTurn;
+	}
+	public void setNewTurn(boolean newTurn) {
+		this.newTurn = newTurn;
+	}
+	public int getActionCost() {
+		return actionCost;
+	}
+	public void setActionCost(int actionCost) {
+		this.actionCost = actionCost;
 	}
 }

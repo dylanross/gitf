@@ -8,6 +8,7 @@ public class StandardMove implements MoveAction
 {
 	private String name = "Move";
 	private Charac mover;
+	private int actionCost;
 	
 	private boolean preAction = true;
 	
@@ -53,5 +54,13 @@ public class StandardMove implements MoveAction
 	
 	public boolean isPreAction() {
 		return preAction;
+	}
+	
+	public int getActionCost() {
+		return actionCost;
+	}
+	
+	public void setActionCost(int actionCost) {
+		this.actionCost = actionCost;
 	}
 }

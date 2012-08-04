@@ -10,6 +10,7 @@ public class StandardReload implements PersonalAction, ItemAction
 	private String name = "Reload";
 	private Charac charac;
 	private Item item;
+	private int actionCost;
 	private boolean preAction = true;
 	
 	public StandardReload(Charac charac, Item item)
@@ -46,5 +47,13 @@ public class StandardReload implements PersonalAction, ItemAction
 	
 	public boolean isPreAction() {
 		return preAction;
+	}
+	
+	public int getActionCost() {
+		return actionCost;
+	}
+	
+	public void setActionCost(int actionCost) {
+		this.actionCost = actionCost;
 	}
 }

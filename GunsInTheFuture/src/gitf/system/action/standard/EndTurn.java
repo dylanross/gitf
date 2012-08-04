@@ -1,7 +1,6 @@
 package gitf.system.action.standard;
 
-import gitf.system.action.FreeAction;
-import gitf.system.action.PersonalAction;
+import gitf.system.action.TurnAction;
 import gitf.system.character.Charac;
 
 /**
@@ -14,10 +13,11 @@ import gitf.system.character.Charac;
  * @author dylanross
  *
  */
-public class EndTurn implements PersonalAction, FreeAction
+public class EndTurn implements TurnAction
 {
 	public String name = "End Turn";				// name of the action
 	private Charac charac;							// the character to query
+	private int actionCost = 0;						// the cost to perform this action
 	
 	private boolean preAction;						// whether the action has been performed yet
 	
@@ -76,7 +76,19 @@ public class EndTurn implements PersonalAction, FreeAction
 	public boolean isEndTurn() {
 		return endTurn;
 	}
+	public boolean isNewTurn() {
+		return false;
+	}
 	public void setEndTurn(boolean endTurn) {
 		this.endTurn = endTurn;
+	}
+	public void setNewTurn(boolean newTurn) {
+		// do nothing - EndTurns can never signify a new turn's beginning
+	}
+	public int getActionCost() {
+		return actionCost;
+	}
+	public void setActionCost(int actionCost) {
+		this.actionCost = actionCost;
 	}
 }

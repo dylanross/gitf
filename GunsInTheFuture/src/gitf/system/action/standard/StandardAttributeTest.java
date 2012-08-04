@@ -1,9 +1,8 @@
 package gitf.system.action.standard;
 
-import gitf.system.action.FreeAction;
-import gitf.system.action.PersonalAction;
+import gitf.system.action.DiceRollAction;
 
-public class StandardAttributeTest //implements FreeAction, PersonalAction
+public class StandardAttributeTest // implements DiceRollAction
 {
 
 }

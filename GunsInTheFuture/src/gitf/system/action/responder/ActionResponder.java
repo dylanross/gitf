@@ -12,9 +12,10 @@ public interface ActionResponder
 {
 	public void respondToAction(Action action);
 	public void respondToAction(AttackAction attackAction);
-	public void respondToAction(FreeAction freeAction);
+	// dice roll action
 	public void respondToAction(ItemAction itemAction);
 	public void respondToAction(MoveAction moveAction);
 	public void respondToAction(PersonalAction personalAction);
 	public void respondToAction(TargettedAction targettedAction);
+	public void respondToAction(TurnAction turnAction);
 }

@@ -12,6 +12,7 @@ import gitf.system.map.Area;
 public class StandardAttack implements AttackAction
 {
 	private String name = "Attack";
+	private int actionCost = 1;
 	
 	private Charac attacker;			// the character performing the attack
 	private Charac defender;			// the character defending the attack
@@ -56,7 +57,6 @@ public class StandardAttack implements AttackAction
 		if (map == defender.getCurrentArea().getMap() && map.getLineOfSight(fromArea, toArea))	// ensure attacker and defender on same map, and that there is LoS
 		{
 			range = map.getDistance(fromArea, toArea);					// determine range between attacker and defender
-			System.out.println("ATTACK RANGE " + range);
 			
 			if (range > weapon.getRange() * 2 == false)					// ensure defender within range of attacker
 			{
@@ -99,7 +99,7 @@ public class StandardAttack implements AttackAction
 					defender.getHealth().setLocationDamage(locationResult, totalDamage);						// set the defender's health appropriately
 					defender.getDamageTable().causeEffect(defender, locationResult, totalDamage);				// cause any adverse effects of this new level of damage
 					
-					attacker.setActionsRemaining(attacker.getActionsRemaining() - 1);
+					attacker.setActionsRemaining(attacker.getActionsRemaining() - actionCost);
 				}
 				else	// if attacker missed :
 				{
@@ -271,5 +271,13 @@ public class StandardAttack implements AttackAction
 
 	public void setReport(String report) {
 		this.report = report;
+	}
+	
+	public int getActionCost() {
+		return actionCost;
+	}
+	
+	public void setActionCost(int actionCost) {
+		this.actionCost = actionCost;
 	}
 }

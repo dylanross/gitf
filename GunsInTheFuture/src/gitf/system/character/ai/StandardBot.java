@@ -2,9 +2,8 @@ package gitf.system.character.ai;
 
 import java.util.ArrayList;
 
-import gitf.system.action.Action;
+import gitf.system.action.TurnAction;
 import gitf.system.action.responder.IgnoreResponder;
-import gitf.system.action.standard.EndTurn;
 import gitf.system.action.standard.StandardAttack;
 import gitf.system.character.Charac;
 import gitf.system.dice.StandardDiceRoll;
@@ -21,16 +20,16 @@ public class StandardBot extends IgnoreResponder implements IntelligenceCore
 		this.owner = owner;
 	}
 	
-	public void respondToAction(Action action) 
+	@Override
+	public void respondToAction(TurnAction action) 
 	{
 		gameCharacters = owner.getPlayer().getGame().getCharacters();
 		
-		if (action instanceof EndTurn) 
+		if (action.isEndTurn()) 
 		{
-			EndTurn endTurnAction = (EndTurn) action;
 			if (owner.getActionsRemaining() > 0)
 			{
-				endTurnAction.setEndTurn(false);
+				action.setEndTurn(false);
 				attackRandom();
 			}
 		}

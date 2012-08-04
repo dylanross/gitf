@@ -2,16 +2,15 @@ package gitf.system.character.species.human;
 
 import java.util.ArrayList;
 
-import gitf.system.action.Action;
-import gitf.system.action.standard.NewTurn;
+import gitf.system.action.TurnAction;
 import gitf.system.action.standard.StandardActionRoll;
 import gitf.system.action.responder.ActionResponder;
+import gitf.system.action.responder.PropertyListResponder;
 import gitf.system.action.responder.ResponderHub;
 import gitf.system.character.Charac;
 import gitf.system.character.Attributes;
 import gitf.system.character.StandardAttributes;
 import gitf.system.character.Equipped;
-import gitf.system.character.CharacPropertyList;
 import gitf.system.character.Health;
 import gitf.system.character.status.DamageTable;
 import gitf.system.character.status.Status;
@@ -49,9 +48,9 @@ public class HumanCharac extends ResponderHub implements Charac<HumanLocation>
 	private Health health;										// the Health object representing the health of the character
 	private DamageTable damageTable = new HumanDamageTable();	// the DamageTable object used when damaging the character
 	
-	private CharacPropertyList<Status> status;					// a list of Statuses attributed to the character
-	private CharacPropertyList<Feat> feats;						// a list of Feats owned by the character
-	private CharacPropertyList<Item> inventory;					// a list of Items owned by the character
+	private PropertyListResponder<Charac, Status> status;		// a list of Statuses attributed to the character
+	private PropertyListResponder<Charac, Feat> feats;			// a list of Feats owned by the character
+	private PropertyListResponder<Charac, Item> inventory;		// a list of Items owned by the character
 	private Equipped equipped;									// the Equipped object representing the items the character has equipped
 	
 	private int actionsRemaining;								// the number of actions the character has remaining
@@ -77,14 +76,14 @@ public class HumanCharac extends ResponderHub implements Charac<HumanLocation>
 			attributes = new StandardAttributes(new int[] { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 });	// set all attributes to 4
 		}
 		catch (Exception e) { }
-		health = new HumanHealth(0, 0, 0, 0);													// sets all damage levels to 0
-		feats = new HumanPropertyList<Feat>(this);												// creates empty feats list
+		health = new HumanHealth(0, 0, 0, 0);												// sets all damage levels to 0
+		feats = new PropertyListResponder<Charac, Feat>(this);								// creates empty feats list
 		responders.add(feats);
-		status = new HumanPropertyList<Status>(this);											// creates empty status lists
+		status = new PropertyListResponder<Charac, Status>(this);							// creates empty status lists
 		responders.add(status);
-		inventory = new HumanPropertyList<Item>(this);											// creates empty inventory
+		inventory = new PropertyListResponder<Charac, Item>(this);							// creates empty inventory
 		responders.add(inventory);
-		equipped = new HumanEquipped(this);														// creates empty equipped
+		equipped = new HumanEquipped(this);													// creates empty equipped
 		responders.add(equipped);
 		
 		setResponders(responders);
@@ -96,16 +95,14 @@ public class HumanCharac extends ResponderHub implements Charac<HumanLocation>
 	/**
 	 * Allows the character to respond to an external action.
 	 */
-	public void respondToAction(Action action)
+	@Override
+	public void respondToAction(TurnAction action)
 	{
-		if (action instanceof NewTurn)
-		{
-			new StandardActionRoll(this).execute();						// roll for actions
-		}
+		passToResponders(action);
 		
-		for (int i = 0; i < getResponders().size(); i++)				// allow other responders to respond
+		if (action.isNewTurn())
 		{
-			getResponders().get(i).respondToAction(action);
+			new StandardActionRoll(this).execute();				// roll for actions
 		}
 	}
 	
@@ -149,9 +146,6 @@ public class HumanCharac extends ResponderHub implements Charac<HumanLocation>
 		return name;
 	}
 	
-	/**
-	 * Getter methods.
-	 */
 	
 	public boolean isIncapacitated() 
 	{
@@ -193,17 +187,17 @@ public class HumanCharac extends ResponderHub implements Charac<HumanLocation>
 	public DamageTable getDamageTable() {
 		return damageTable;
 	}
-	public CharacPropertyList<Feat> getFeats() {
+	public PropertyListResponder<Charac, Feat> getFeats() {
 		return feats;
 	}
-	public CharacPropertyList<Status> getStatus() {
+	public PropertyListResponder<Charac, Status> getStatus() {
 		return status;
+	}
+	public PropertyListResponder<Charac, Item> getInventory() {
+		return inventory;
 	}
 	public Equipped getEquipped() {
 		return equipped;
-	}
-	public CharacPropertyList<Item> getInventory() {
-		return inventory;
 	}
 	public int getActionsRemaining() {
 		return actionsRemaining;

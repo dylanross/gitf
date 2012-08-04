@@ -15,5 +15,5 @@ public interface PersonalAction extends Action
 	 * Getters / Setters.
 	 */
 	
-	public Charac getCharac();	// return the character involved in this action
+	public Charac getCharac();			// return the character involved in this action
 }

@@ -1,8 +1,7 @@
 package gitf.system.character;
 
-import java.util.ArrayList;
-
-import gitf.system.action.Action;
+import gitf.system.action.responder.ActionResponder;
+import gitf.system.action.responder.PropertyListResponder;
 import gitf.system.character.ai.IntelligenceCore;
 import gitf.system.character.status.DamageTable;
 import gitf.system.character.status.Status;
@@ -19,7 +18,7 @@ import gitf.system.map.Area;
  *
  * @param <Location>
  */
-public interface Charac<Location extends Enum<Location>>
+public interface Charac<Location extends Enum<Location>> extends ActionResponder
 {	
 	public String getName();									// returns the name of the character
 	
@@ -32,14 +31,12 @@ public interface Charac<Location extends Enum<Location>>
 	public DamageTable<Location> getDamageTable();				// returns the DamageTable associated with this character
 	
 	public Equipped getEquipped();								// returns the Equipped object associated with this character
-	public CharacPropertyList<Item> getInventory();				// returns the Inventory associated with this character
-	public CharacPropertyList<Feat> getFeats();					// returns a CharacPropertyList of Feats associated with the character
-	public CharacPropertyList<Status> getStatus();				// returns a CharacPropertyList of Statuses
+	public PropertyListResponder<Charac, Item> getInventory();	// returns the Inventory associated with this character
+	public PropertyListResponder<Charac, Feat> getFeats();		// returns a CharacPropertyList of Feats associated with the character
+	public PropertyListResponder<Charac, Status> getStatus();	// returns a CharacPropertyList of Statuses
 	
 	public int getActionsRemaining();							// returns the number of actions this character has remaining
 	public void setActionsRemaining(int actionsRemaining);		// sets the number of actions this character has remaining
-	
-	public void respondToAction(Action action);					// allows the character to respond to external actions
 	
 	public Area getCurrentArea();								// returns the area the character currently occupies
 	public void setCurrentArea(Area currentArea);				// sets the area the character currently occupies

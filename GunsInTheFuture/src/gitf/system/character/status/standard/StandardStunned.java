@@ -50,7 +50,7 @@ public class StandardStunned extends ExclusiveStatus implements Stunned
 	 */
 	public void addToOwner()
 	{
-		ArrayList<Status> status = owner.getStatus();
+		ArrayList<Status> status = owner.getStatus().getContents();
 		boolean incapable = false;
 		for (int i = 0; i < status.size(); i++)
 		{

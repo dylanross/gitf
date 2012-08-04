@@ -1,18 +1,25 @@
 package gitf.system.character;
 
-import gitf.system.item.CcWeapon;
+import gitf.system.item.AbstractItem;
+import gitf.system.item.Weapon;
 
 /**
- * Interface for objects representing the unarmed attacks of
+ * Abstract class for objects representing the unarmed attacks of
  * characters.
- *
- * Currently doesn't do much, but might be a useful node in 
- * the Item hierarchy at some point.
+ * 
+ * Always returns 0 from getHandSlots() method.
+ * Always returns true from isNatural() method.
  * 
  * @author dylanross
  *
  */
-public interface UnarmedAttack extends CcWeapon
+public abstract class UnarmedAttack extends AbstractItem implements Weapon
 {
-
+	public final int getHandSlots() {
+		return 0;
+	}
+	
+	public final boolean isNatural() {
+		return true;
+	}
 }

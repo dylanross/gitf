@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import gitf.system.action.Action;
 import gitf.system.action.standard.NewTurn;
 import gitf.system.action.standard.StandardActionRoll;
+import gitf.system.action.responder.ActionResponder;
+import gitf.system.action.responder.ResponderHub;
 import gitf.system.character.Charac;
 import gitf.system.character.Attributes;
 import gitf.system.character.StandardAttributes;
 import gitf.system.character.Equipped;
-import gitf.system.character.Inventory;
+import gitf.system.character.CharacPropertyList;
 import gitf.system.character.Health;
 import gitf.system.character.status.DamageTable;
 import gitf.system.character.status.Status;
@@ -24,6 +26,8 @@ import gitf.system.character.ai.IntelligenceCore;
 import gitf.system.character.ai.StandardBot;
 import gitf.system.player.Player;
 import gitf.system.player.BotPlayer;
+import gitf.system.item.Item;
+import gitf.system.map.Area;
 import gitf.system.item.standard.ccweapon.StandardSword;
 
 /**
@@ -32,7 +36,7 @@ import gitf.system.item.standard.ccweapon.StandardSword;
  * @author dylanross
  *
  */
-public class HumanCharac implements Charac<HumanLocation>
+public class HumanCharac extends ResponderHub implements Charac<HumanLocation>
 {
 	private String name;										// the name of the character
 	
@@ -45,14 +49,14 @@ public class HumanCharac implements Charac<HumanLocation>
 	private Health health;										// the Health object representing the health of the character
 	private DamageTable damageTable = new HumanDamageTable();	// the DamageTable object used when damaging the character
 	
-	private ArrayList<Status> status;							// a list of statuses attributed to the character
-	
-	private ArrayList<Feat> feats;								// a list of feats owned by the character
-	
-	private Inventory inventory;								// the Inventory object representing the inventory of the character
+	private CharacPropertyList<Status> status;					// a list of Statuses attributed to the character
+	private CharacPropertyList<Feat> feats;						// a list of Feats owned by the character
+	private CharacPropertyList<Item> inventory;					// a list of Items owned by the character
 	private Equipped equipped;									// the Equipped object representing the items the character has equipped
 	
 	private int actionsRemaining;								// the number of actions the character has remaining
+	
+	private Area currentArea;									// the area the character currently occupies
 	
 	/**
 	 * Zero argument constructor. Produces generic human character
@@ -63,17 +67,27 @@ public class HumanCharac implements Charac<HumanLocation>
 	{
 		name = HumanNameGenerator.generate();													// set to random name
 		player = new BotPlayer();																// give character a Bot player
+		
+		ArrayList<ActionResponder> responders = new ArrayList<ActionResponder>(0);				// create ArrayList to hold responders
+		
 		intelCore = new StandardBot(this);														// give character a standard Bot intelligence core
+		responders.add(intelCore);
 		try 
 		{
 			attributes = new StandardAttributes(new int[] { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 });	// set all attributes to 4
 		}
 		catch (Exception e) { }
 		health = new HumanHealth(0, 0, 0, 0);													// sets all damage levels to 0
-		feats = new ArrayList<Feat>(0);															// creates empty feats list
-		status = new ArrayList<Status>(0);														// creates empty status lists
-		inventory = new HumanInventory(this);													// creates empty inventory
+		feats = new HumanPropertyList<Feat>(this);												// creates empty feats list
+		responders.add(feats);
+		status = new HumanPropertyList<Status>(this);											// creates empty status lists
+		responders.add(status);
+		inventory = new HumanPropertyList<Item>(this);											// creates empty inventory
+		responders.add(inventory);
 		equipped = new HumanEquipped(this);														// creates empty equipped
+		responders.add(equipped);
+		
+		setResponders(responders);
 		
 		new StandardStance(this, StanceType.STANDING).addToOwner();								// give HumanCharac a Standing Stance status
 		equipped.equip(new StandardSword());													// give HumanCharac a StandardSword
@@ -84,23 +98,14 @@ public class HumanCharac implements Charac<HumanLocation>
 	 */
 	public void respondToAction(Action action)
 	{
-		equipped.respondToAction(action);
-		
-		for (int i = 0; i < feats.size(); i ++)							// count through Feats :
-		{
-			feats.get(i).respondToAction(action);						// allow Feats to respond
-		}
-		
-		for (int i = 0; i < status.size(); i ++)						// count through Statuses :
-		{
-			status.get(i).respondToAction(action);						// allow Statuses to respond
-		}
-		
-		intelCore.respondToAction(action);								// allow the intelligence core to respond
-		
 		if (action instanceof NewTurn)
 		{
 			new StandardActionRoll(this).execute();						// roll for actions
+		}
+		
+		for (int i = 0; i < getResponders().size(); i++)				// allow other responders to respond
+		{
+			getResponders().get(i).respondToAction(action);
 		}
 	}
 	
@@ -117,10 +122,7 @@ public class HumanCharac implements Charac<HumanLocation>
 	 */
 	public void statusReport()
 	{
-		for (int i = 0; i < status.size(); i++)					// count through Statuses :
-		{
-			System.out.println("- " + status.get(i).getName());	// print the Status's name
-		}
+		System.out.println(status.report());
 	}
 	
 	/**
@@ -155,12 +157,12 @@ public class HumanCharac implements Charac<HumanLocation>
 	{
 		boolean result = false;
 		
-		for (int i = 0; i < status.size(); i++)
+		for (int i = 0; i < status.getContents().size(); i++)
 		{
-			if (status.get(i) instanceof Dead ||
-				status.get(i) instanceof Unconscious ||
-				status.get(i) instanceof Down ||
-				status.get(i) instanceof Stunned)
+			if (status.getContents().get(i) instanceof Dead ||
+				status.getContents().get(i) instanceof Unconscious ||
+				status.getContents().get(i) instanceof Down ||
+				status.getContents().get(i) instanceof Stunned)
 			{
 				result = true;
 			}
@@ -191,16 +193,16 @@ public class HumanCharac implements Charac<HumanLocation>
 	public DamageTable getDamageTable() {
 		return damageTable;
 	}
-	public ArrayList<Feat> getFeats() {
+	public CharacPropertyList<Feat> getFeats() {
 		return feats;
 	}
-	public ArrayList<Status> getStatus() {
+	public CharacPropertyList<Status> getStatus() {
 		return status;
 	}
 	public Equipped getEquipped() {
 		return equipped;
 	}
-	public Inventory getInventory() {
+	public CharacPropertyList<Item> getInventory() {
 		return inventory;
 	}
 	public int getActionsRemaining() {
@@ -208,5 +210,11 @@ public class HumanCharac implements Charac<HumanLocation>
 	}
 	public void setActionsRemaining(int actionsRemaining) {
 		this.actionsRemaining = actionsRemaining;
+	}
+	public Area getCurrentArea() {
+		return currentArea;
+	}
+	public void setCurrentArea(Area currentArea) {
+		this.currentArea = currentArea;
 	}
 }

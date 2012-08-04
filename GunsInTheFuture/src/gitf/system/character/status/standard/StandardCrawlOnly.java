@@ -19,7 +19,7 @@ public class StandardCrawlOnly extends ExclusiveStatus implements MovementRestri
 	
 	public void addToOwner()
 	{
-		ArrayList<Status> status = getOwner().getStatus();
+		ArrayList<Status> status = getOwner().getStatus().getContents();
 		boolean incapable = false;
 		for (int i = 0; i < status.size(); i++)
 		{

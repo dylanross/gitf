@@ -3,6 +3,7 @@ package gitf.system.character.status;
 import java.util.ArrayList;
 
 import gitf.system.action.Action;
+import gitf.system.action.responder.IgnoreResponder;
 import gitf.system.character.Charac;
 import gitf.system.character.status.standard.StandardDead;
 
@@ -13,7 +14,7 @@ import gitf.system.character.status.standard.StandardDead;
  * @author dylanross
  *
  */
-public class ExclusiveStatus implements Status
+public class ExclusiveStatus extends IgnoreResponder implements Status
 {
 	private String name = "ExclusiveStatus";
 	private Charac owner;
@@ -39,7 +40,7 @@ public class ExclusiveStatus implements Status
 	 */
 	public void addToOwner()
 	{
-		ArrayList<Status> status = owner.getStatus();
+		ArrayList<Status> status = owner.getStatus().getContents();
 		boolean incapable = false;
 		for (int i = 0; i < status.size(); i++)
 		{
@@ -61,8 +62,12 @@ public class ExclusiveStatus implements Status
 	 */
 	public void removeFromOwner()
 	{
-		ArrayList<Status> status = owner.getStatus();
+		ArrayList<Status> status = owner.getStatus().getContents();
 		status.remove(this);
+	}
+	
+	public String toString() {
+		return getName();
 	}
 	
 	/**

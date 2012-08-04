@@ -43,7 +43,7 @@ public class StandardDead extends ExclusiveStatus implements Dead
 	 */
 	public void addToOwner()
 	{
-		ArrayList<Status> status = getOwner().getStatus();
+		ArrayList<Status> status = getOwner().getStatus().getContents();
 		boolean incapable = false;
 		for (int i = 0; i < status.size(); i++)
 		{

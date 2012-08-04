@@ -10,7 +10,6 @@ import gitf.system.character.status.standard.StandardStance.StanceType;
 import gitf.system.dice.StandardDiceRoll;
 import gitf.system.item.Item;
 import gitf.system.item.Equippable;
-import gitf.system.item.HandHeld;
 
 /**
  * An implementation of the DamageTable interface for Human characters.
@@ -100,7 +99,7 @@ public class HumanDamageTable implements DamageTable<HumanLocation>
 		ArrayList<Item> heldItems = new ArrayList<Item>(0);
 		for (int i = 0; i < equippedItems.size(); i++)
 		{
-			if (equippedItems.get(i) instanceof HandHeld) 
+			if (equippedItems.get(i).getHandSlots() > 0) 
 			{
 				heldItems.add(equippedItems.get(i));
 			}

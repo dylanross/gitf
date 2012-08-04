@@ -5,15 +5,19 @@ import java.util.ArrayList;
 import gitf.system.dice.DiceRoll;
 import gitf.system.dice.StandardDiceRoll;
 import gitf.system.action.Action;
-import gitf.system.item.RangedWeapon;
+import gitf.system.item.Weapon;
 import gitf.system.item.quality.Quality;
 
-public class StandardRevolver implements RangedWeapon 
+public class StandardRevolver extends RangedWeapon 
 {
 	private String name = "Revolver";
 	private int range = 15;
+	private int shortRangeModifier = 1;
+	private int longRangeModifier = -2;
 	private DiceRoll damage = new StandardDiceRoll(1, 10);
 	private ArrayList<Quality> qualities;
+	private int handSlots = 1;
+	private boolean natural = false;
 	
 	public StandardRevolver()
 	{
@@ -34,10 +38,22 @@ public class StandardRevolver implements RangedWeapon
 	public int getRange() {
 		return range;
 	}
+	public int getShortRangeModifier() {
+		return shortRangeModifier;
+	}
+	public int getLongRangeModifier() {
+		return longRangeModifier;
+	}
 	public DiceRoll getDamage() {
 		return damage;
 	}
 	public ArrayList<Quality> getQualities() {
 		return qualities;
+	}
+	public int getHandSlots() {
+		return handSlots;
+	}
+	public boolean isNatural() {
+		return natural;
 	}
 }

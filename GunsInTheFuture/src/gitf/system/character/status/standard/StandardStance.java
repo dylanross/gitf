@@ -60,7 +60,7 @@ public class StandardStance extends ExclusiveStatus implements Stance
 	 */
 	public void addToOwner()
 	{
-		ArrayList<Status> status = getOwner().getStatus();
+		ArrayList<Status> status = getOwner().getStatus().getContents();
 		boolean dead = false;
 		for (int i = 0; i < status.size(); i++)
 		{

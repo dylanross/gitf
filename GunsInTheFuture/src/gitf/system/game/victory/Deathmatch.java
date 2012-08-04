@@ -27,7 +27,7 @@ public class Deathmatch implements VictoryConditions
 		
 		for (int i = 0; i < characters.size(); i++)
 		{
-			ArrayList<Status> status = characters.get(i).getStatus();
+			ArrayList<Status> status = characters.get(i).getStatus().getContents();
 			for (int j = 0; j < status.size(); j++)
 			{
 				if (status.get(j) instanceof Dead ||

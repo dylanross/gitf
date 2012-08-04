@@ -4,7 +4,7 @@ import gitf.system.item.Equippable;
 
 import java.util.ArrayList;
 
-import gitf.system.action.Action;
+import gitf.system.action.responder.ActionResponder;
 
 /**
  * Object for keeping track of a character's
@@ -13,7 +13,7 @@ import gitf.system.action.Action;
  * @author dylanross
  *
  */
-public interface Equipped
+public interface Equipped extends ActionResponder
 {
 	public Charac getOwner();					// returns the character who has these items equipped
 	public ArrayList<Equippable> getItems();	// returns all equipped items
@@ -21,6 +21,5 @@ public interface Equipped
 	public int getFreeSlots();					// returns the number of slots for hand-held items remaining (e.g. 1 for human equipped with Sword)	
 	public void equip(Equippable item);			// equips an item
 	public void unequip(Equippable item);		// unequips an item
-	public void respondToAction(Action action); // allows the Equipped object to respond to external Actions.
 	public String report();						// generates and returns a report of the equipped items
 }

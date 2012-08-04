@@ -43,7 +43,7 @@ public class StandardUnconscious extends ExclusiveStatus implements Unconscious
 	 */
 	public void addToOwner()
 	{
-		ArrayList<Status> status = getOwner().getStatus();
+		ArrayList<Status> status = getOwner().getStatus().getContents();
 		boolean incapable = false;
 		for (int i = 0; i < status.size(); i++)
 		{

@@ -8,6 +8,8 @@ import gitf.system.character.status.DamageTable;
 import gitf.system.character.status.Status;
 import gitf.system.character.feat.Feat;
 import gitf.system.player.Player;
+import gitf.system.item.Item;
+import gitf.system.map.Area;
 
 /**
  * An interface specifying what any character within the game should implement
@@ -30,16 +32,17 @@ public interface Charac<Location extends Enum<Location>>
 	public DamageTable<Location> getDamageTable();				// returns the DamageTable associated with this character
 	
 	public Equipped getEquipped();								// returns the Equipped object associated with this character
-	public Inventory getInventory();							// returns the Inventory associated with this character
-	
-	public ArrayList<Feat> getFeats();							// returns a list of this character's Feats
-	
-	public ArrayList<Status> getStatus();						// returns a list of this character's Statuses
+	public CharacPropertyList<Item> getInventory();				// returns the Inventory associated with this character
+	public CharacPropertyList<Feat> getFeats();					// returns a CharacPropertyList of Feats associated with the character
+	public CharacPropertyList<Status> getStatus();				// returns a CharacPropertyList of Statuses
 	
 	public int getActionsRemaining();							// returns the number of actions this character has remaining
 	public void setActionsRemaining(int actionsRemaining);		// sets the number of actions this character has remaining
 	
 	public void respondToAction(Action action);					// allows the character to respond to external actions
+	
+	public Area getCurrentArea();								// returns the area the character currently occupies
+	public void setCurrentArea(Area currentArea);				// sets the area the character currently occupies
 	
 	public String toString();									// returns a String representation of this character
 	

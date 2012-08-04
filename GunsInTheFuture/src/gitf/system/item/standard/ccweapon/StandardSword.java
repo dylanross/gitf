@@ -5,16 +5,15 @@ import java.util.ArrayList;
 import gitf.system.dice.DiceRoll;
 import gitf.system.dice.StandardDiceRoll;
 import gitf.system.action.Action;
-import gitf.system.item.CcWeapon;
-import gitf.system.item.HandHeld;
 import gitf.system.item.quality.Quality;
 
-public class StandardSword implements CcWeapon, HandHeld
+public class StandardSword extends CcWeapon
 {
 	private String name = "Sword";
 	private DiceRoll damage = new StandardDiceRoll(8);
-	private int slots = 1;
+	private int handSlots = 1;
 	private ArrayList<Quality> qualities;
+	private boolean natural = false;
 	
 	public StandardSword()
 	{
@@ -34,10 +33,13 @@ public class StandardSword implements CcWeapon, HandHeld
 	public DiceRoll getDamage() {
 		return damage;
 	}
-	public int getSlots() {
-		return slots;
+	public int getHandSlots() {
+		return handSlots;
 	}
 	public ArrayList<Quality> getQualities() {
 		return qualities;
+	}
+	public boolean isNatural() {
+		return natural;
 	}
 }

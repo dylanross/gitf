@@ -3,12 +3,12 @@ package gitf.system.character.species.human;
 import java.util.ArrayList;
 
 import gitf.system.action.Action;
+import gitf.system.action.responder.ResponderHub;
 import gitf.system.character.Charac;
 import gitf.system.character.Equipped;
 import gitf.system.item.Equippable;
-import gitf.system.item.HandHeld;
 
-public class HumanEquipped implements Equipped 
+public class HumanEquipped extends ResponderHub implements Equipped 
 {
 	private Charac owner;					// the character to whom this Equipped object refers
 	private ArrayList<Equippable> items;	// the items that are equipped
@@ -31,22 +31,15 @@ public class HumanEquipped implements Equipped
 	
 	public void equip(Equippable item)
 	{
-		if (item instanceof HandHeld)				// if the item is HandHeld :
+		if (item.isNatural() == false)				// can't equip natural items (i.e. fists) - they are automatically there when others are unequipped
 		{
-			HandHeld hhItem = (HandHeld) item;		// cast to HandHeld
-			if (hhItem.getSlots() <= freeSlots)		// if there are enough free slots to equip the item :
+			if (item.getHandSlots() <= freeSlots)	// if there are enough free slots to equip the item :
 			{
 				remove(item);						// remove any previous references to the item (precaution)
 				items.add(item);					// add the item to the equipped items list
 				owner.getInventory().remove(item);	// remove the item from the owner's inventory
 				cleanUpSlots();						// recalculates the number of free slots available
 			}
-		}
-		else										// if the item is not HandHeld :
-		{
-			remove(item);							// remove any previous references to the item (precaution)
-			items.add(item);						// add the item to the equipped items list
-			owner.getInventory().remove(item);		// remove the item from the owner's inventory
 		}
 	}
 	
@@ -56,13 +49,27 @@ public class HumanEquipped implements Equipped
 	 */
 	private void remove(Equippable item)
 	{
-		for (int i = 0; i < items.size(); i++)				// count through all items
+		for (int i = 0; i < items.size(); i++)	// count through all items
 		{
 			if (items.get(i) == item)
 			{
-				items.remove(i);		// remove references to the specified item
-				i--;
+				items.remove(i);				// remove references to the specified item
+				i--;							// decrement index
 			}
+		}
+	}
+	
+	/**
+	 * Removes a specified item from the equipped items list and places
+	 * it in the owning character's inventory.
+	 */
+	public void unequip(Equippable item)
+	{
+		if (item.isNatural() == false)								// can't unequip fists (the only natural human item)
+		{
+			if (items.remove(item)) owner.getInventory().add(item);		// try to remove the item from equipped list
+																		// if successful, add to owner's inventory
+			cleanUpSlots();												// reevaluate the number of free slots available
 		}
 	}
 	
@@ -75,30 +82,16 @@ public class HumanEquipped implements Equipped
 		freeSlots = handHeldSlots;										// default to maximum free slots
 		for (int i = 0; i < items.size(); i++)							// count through items
 		{
-			if (items.get(i) instanceof HandHeld)						// if the item is HandHeld :
-			{
-				HandHeld hhItem = (HandHeld) items.get(i);				// cast the item to a HandHeld
-				freeSlots = freeSlots - hhItem.getSlots();				// deduct the item's slot value from the number of free slots
-			}
-			if (items.get(i) instanceof HumanFist)						// if the item is a HumanFist :
+			freeSlots = freeSlots - items.get(i).getHandSlots();		// deduct the item's hand slot value from number of free slots
+			
+			if (items.get(i).isNatural())								// if the item is a HumanFist (the only natural human item) :
 			{
 				items.remove(i);										// remove the HumanFist
-				i--;
+				i--;													// decrement index
 			}
 		}
 		
-		for (int i = 0; i < freeSlots; i++) equip(new HumanFist());		// equip a new HumanFist for each empty slot
-	}
-	
-	/**
-	 * Removes a specified item from the equipped items list and places
-	 * it in the owning character's inventory.
-	 */
-	public void unequip(Equippable item)
-	{
-		if (items.remove(item)) owner.getInventory().add(item);		// try to remove the item from equipped list
-																	// if successful, add to owner's inventory
-		cleanUpSlots();												// reevaluate the number of free slots available
+		for (int i = 0; i < freeSlots; i++) items.add(new HumanFist());		// equip a new HumanFist for each empty slot
 	}
 	
 	/**

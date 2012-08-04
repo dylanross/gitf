@@ -4,12 +4,16 @@ import java.util.ArrayList;
 
 import gitf.system.character.Charac;
 import gitf.system.player.Player;
+import gitf.system.map.Map;
+import gitf.system.map.TestMap;
 
 public class StandardGame implements Game 
 {
 	private ArrayList<Player> players;
 	private ArrayList<Charac> characters;
 	private StandardTurnSequence turnSequence;
+	
+	private Map map;
 	
 	private VictoryConditions victoryConditions;
 	
@@ -22,11 +26,14 @@ public class StandardGame implements Game
 	
 	public StandardGame(ArrayList<Charac> characters)
 	{
+		this.map = new TestMap();
 		this.victoryConditions = victoryConditions;
 		this.characters = characters;
 		players = new ArrayList<Player>(0);
 		for (int i = 0; i < characters.size(); i++)
 		{
+			characters.get(i).setCurrentArea(map.getAreas().get(0));
+			
 			if (players.contains(characters.get(i).getPlayer()) == false)
 			{
 				players.add(characters.get(i).getPlayer());

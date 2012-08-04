@@ -3,15 +3,15 @@ package gitf.system.character.ai;
 import java.util.ArrayList;
 
 import gitf.system.action.Action;
+import gitf.system.action.responder.IgnoreResponder;
 import gitf.system.action.standard.EndTurn;
 import gitf.system.action.standard.StandardAttack;
 import gitf.system.character.Charac;
 import gitf.system.dice.StandardDiceRoll;
-import gitf.system.item.CcWeapon;
 import gitf.system.item.Equippable;
-import gitf.system.item.standard.ccweapon.StandardSword;
+import gitf.system.item.standard.ccweapon.CcWeapon;
 
-public class StandardBot implements IntelligenceCore 
+public class StandardBot extends IgnoreResponder implements IntelligenceCore 
 {
 	private Charac owner;
 	private ArrayList<Charac> gameCharacters;

@@ -1,5 +1,7 @@
 package gitf.gui;
 
+//import java.util.Random;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Dimension;
@@ -27,7 +29,9 @@ public class GitfGUI extends JFrame implements GUI
 		UIManager.put("TitledBorder.titleColor", Color.LIGHT_GRAY);
 		UIManager.put("Panel.background", Color.DARK_GRAY);
 		UIManager.put("TextArea.background", Color.WHITE);
+		UIManager.put("TextArea.foreground", Color.DARK_GRAY);
 		UIManager.put("TextPane.background", Color.WHITE);
+		UIManager.put("TextPane.foreground", Color.DARK_GRAY);
 		
 		UIManager.put("Button.font", font);
 		UIManager.put("ToggleButton.font", font);
@@ -99,7 +103,7 @@ public class GitfGUI extends JFrame implements GUI
 		// set to not be resizeable
 		setResizable(false);
 		
-		leftPane.getMap().write("GitF alpha (0.00) \nMap non-functional");
+		// leftPane.getMap().write("GitF alpha (0.00) \nMap non-functional");
 	}
 	
 	public void printMap(Area[][] visibleAreas)
@@ -121,4 +125,19 @@ public class GitfGUI extends JFrame implements GUI
 	{
 		return leftPane.getln();
 	}
+	
+	/*private void randomDrawMap()
+	{
+		char[][] chars = new char[35][97];
+		for (int i = 0; i < chars.length; i++)
+		{
+			for (int j = 0; j < chars[i].length; j++)
+			{
+				Random r = new Random();
+				char c = (char)(r.nextInt(26) + 'a');
+				chars[i][j] = c;
+			}
+		}
+		leftPane.map.draw(chars);
+	}*/
 }

@@ -7,7 +7,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 import gitf.gui.AreaToCharMapConverter;
-import gitf.gui.component.map.StandardGameMap;
+//import gitf.gui.component.map.StandardGameMap;
+import gitf.gui.component.map.BasicGameMap;
 import gitf.gui.component.textio.StandardTextIoArea;
 //import gitf.system.map.Area;
 
@@ -16,7 +17,7 @@ public class LeftPane extends JPanel
 	public static final long serialVersionUID = 001;
 	
 	public AreaToCharMapConverter areaToCharMapConverter;
-	public StandardGameMap map;
+	public BasicGameMap map;
 	public StandardTextIoArea inputOutputArea;
 	
 	public LeftPane(int width, int height)
@@ -27,7 +28,7 @@ public class LeftPane extends JPanel
 
 		int mapWidth = width;
 		int mapHeight = (height / 3) * 2;
-		map = new StandardGameMap(mapWidth, mapHeight);
+		map = new BasicGameMap(mapWidth, mapHeight);
 		map.setPreferredSize(new Dimension(mapWidth, mapHeight));
 		map.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		add(map);
@@ -45,6 +46,11 @@ public class LeftPane extends JPanel
 		map.draw(chars, colors);
 	}
 	
+	public void printMap(char[][] tiles)
+	{
+		map.draw(tiles);
+	}
+	
 	public void println(String content)
 	{
 		inputOutputArea.println(content);
@@ -55,7 +61,7 @@ public class LeftPane extends JPanel
 		return inputOutputArea.getln();
 	}
 	
-	public StandardGameMap getMap() {
+	public BasicGameMap getMap() {
 		return map;
 	}
 }

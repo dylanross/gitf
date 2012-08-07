@@ -21,8 +21,8 @@ public class Run
 	private static GUI gui = new GitfGUI();										// the GUI for the game
 	private static int numberGames = 1;											// number of games in the simulation
 	private static boolean drawGraph = false;									// whether to draw a frequency distribution of game length at the end of the simulation
-	private static int numberCharacters = 2;									// the number of characters in the simulation
-	private static int gameSpeed = 10;											// the delay between turns and actions
+	private static int numberCharacters = 3;									// the number of characters in the simulation
+	private static int gameSpeed = 1;											// the delay between turns and actions
 	
 	private static ArrayList<Integer> metrics = new ArrayList<Integer>(0);		// frequency distribution of game lengths
 	

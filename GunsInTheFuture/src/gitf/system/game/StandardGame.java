@@ -106,7 +106,7 @@ public class StandardGame implements Game
 			turnSequence.order();
 			counter++;
 			
-			printlnToAll("--- end of game turn " + (counter + 1));
+			printlnToAll("--- end of game turn " + (counter));
 			printlnToAll();
 		}
 		

@@ -1,7 +1,7 @@
-package gitf.system.game;
+package gitf.system.game.victory;
 
 public interface VictoryConditions 
 {
 	public boolean areConditionsMet();
-	public void report();
+	public String report();
 }

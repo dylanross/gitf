@@ -9,7 +9,7 @@ public class TestMap implements Map
 	
 	public TestMap() {
 		areas = new ArrayList<Area>(0);
-		areas.add(new TestArea(this));
+		areas.add(new TestArea(this, new int[] { 0, 0, 0 }));
 	}
 	
 	public String getName() {

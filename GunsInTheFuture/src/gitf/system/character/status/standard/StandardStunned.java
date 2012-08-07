@@ -1,15 +1,14 @@
 package gitf.system.character.status.standard;
 
-import java.util.ArrayList;
-
-import gitf.system.action.Action;
-import gitf.system.action.standard.NewTurn;
-import gitf.system.action.standard.StandardAttack;
+import gitf.system.action.AttackAction;
+import gitf.system.action.TurnAction;
+import gitf.system.action.responder.PropertyList;
 import gitf.system.character.Charac;
 import gitf.system.character.status.Status;
 import gitf.system.character.status.Stunned;
-import gitf.system.character.status.ExclusiveStatus;
-import gitf.system.character.status.standard.StandardStance.StanceType;
+import gitf.system.character.status.Dead;
+import gitf.system.character.status.Unconscious;
+import gitf.system.character.status.Down;
 
 public class StandardStunned extends ExclusiveStatus implements Stunned
 {
@@ -24,24 +23,43 @@ public class StandardStunned extends ExclusiveStatus implements Stunned
 		this.turnsRemaining = turnsRemaining;
 	}
 	
-	public void respondToAction(Action action)
+	/**
+	 * Any attacks against a Stunned character get a +2 chance to hit.
+	 */
+	@Override
+	public void respondToAction(AttackAction attackAction)
 	{
-		if (action instanceof NewTurn) turnsRemaining--;
-		if (turnsRemaining <= 0) removeFromOwner();
-	
-		if (action instanceof StandardAttack)
+		if (attackAction.isPreAction())									// if the attack is yet to be performed :
 		{
-			StandardAttack standardAttackAction = (StandardAttack) action;
-			if (standardAttackAction.isPreAction())
+			if (getOwner() == attackAction.getDefender())				// if the owner of this Stunned status is the defender in the attack :
 			{
-				if (getOwner() == standardAttackAction.getDefender())
-				{
-					int toHitChance = standardAttackAction.getToHitChance();
-					standardAttackAction.setToHitChance(toHitChance + 2);
-				}
+				int toHitChance = attackAction.getToHitChance();		// get the attack's to hit chance
+				attackAction.setToHitChance(toHitChance + 2);			// increase hit chance by 3 then set
 			}
 		}
+	}
 	
+	/**
+	 * All turn actions are set to deny start of a new turn and 
+	 * ask for end of the current turn.
+	 */
+	@Override
+	public void respondToAction(TurnAction turnAction)
+	{
+		if (turnAction.isNewTurn()) 									// if the TurnAction wants to start a new turn
+		{
+			turnsRemaining--;											// reduce number of turns of Stunned remaining
+			if (turnsRemaining <= 0)									// if number of turns has been reduced to equal to or less than 0 :
+			{
+				removeFromOwner();										// remove the stunned status and allow start of the new turn
+			}
+			else
+			{
+				turnAction.setNewTurn(false);							// do not allow new turns to start when Stunned
+			}
+		}
+		
+		if (! turnAction.isEndTurn()) turnAction.setEndTurn(true);		// ask to end the turn
 	}
 	
 	/**
@@ -50,20 +68,20 @@ public class StandardStunned extends ExclusiveStatus implements Stunned
 	 */
 	public void addToOwner()
 	{
-		ArrayList<Status> status = owner.getStatus().getContents();
+		PropertyList<Charac, Status> status = owner.getStatus();
 		boolean incapable = false;
 		for (int i = 0; i < status.size(); i++)
 		{
-			if (status.get(i) instanceof StandardDead ||
-				status.get(i) instanceof StandardUnconscious ||
-				status.get(i) instanceof StandardDown)
+			if (status.get(i) instanceof Dead ||
+				status.get(i) instanceof Unconscious ||
+				status.get(i) instanceof Down)
 			{
 				incapable = true;
 			}
-			if (status.get(i) instanceof StandardStunned) 
+			if (status.get(i) instanceof Stunned) 
 			{
 				turnsRemaining += ((StandardStunned) status.get(i)).getTurnsRemaining();
-				status.remove(i);
+				status.get(i).removeFromOwner();
 				i--;
 			}
 		}

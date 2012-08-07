@@ -2,29 +2,36 @@ package gitf.system.player;
 
 import java.util.ArrayList;
 
+import gitf.gui.GUI;
 import gitf.system.game.Game;
 import gitf.system.character.Charac;
 
 public class StandardPlayer implements Player
 {
-	private Game game;
-	private ArrayList<Charac> characters;
 	private String name;
+	private ArrayList<Charac> characters;
+	private GUI gui;
+	private Game game;
 	
 	/**
 	 * Getters / Setters.
 	 */
 	
-	public Game getGame() {
-		return game;
+	public String getName() {
+		return name;
 	}
 	public ArrayList<Charac> getCharacters() {
 		return characters;
 	}
-	public String getName() {
-		return name;
+	public GUI getGUI() {
+		return gui;
 	}
-	
+	public void setGUI(GUI gui) {
+		this.gui = gui;
+	}
+	public Game getGame() {
+		return game;
+	}
 	public void setGame(Game game) {
 		this.game = game;
 	}

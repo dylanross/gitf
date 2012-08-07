@@ -12,7 +12,7 @@ public interface ActionResponder
 {
 	public void respondToAction(Action action);
 	public void respondToAction(AttackAction attackAction);
-	// dice roll action
+	public void respondToAction(DiceRollAction diceRollAction);
 	public void respondToAction(ItemAction itemAction);
 	public void respondToAction(MoveAction moveAction);
 	public void respondToAction(PersonalAction personalAction);

@@ -19,6 +19,8 @@ public interface Action
 	 * Getters / Setters.
 	 */
 	public String getName();					// returns the name of the action
+	public String getReport();					// returns a report of the action
+	public void setReport(String report);		// sets the report of the action
 	public boolean isPreAction();				// returns whether the action is yet to be completed
 	public int getActionCost();					// the cost of this action's execution
 												// if 0, it is a free action

@@ -2,10 +2,12 @@ package gitf.system;
 
 import java.util.ArrayList;
 
+import gitf.gui.GUI;
+import gitf.gui.GitfGUI;
 import gitf.system.character.Charac;
 import gitf.system.character.species.human.HumanCharac;
 import gitf.system.game.StandardGame;
-import gitf.system.game.victory.Deathmatch;;
+import gitf.system.game.victory.Deathmatch;
 
 /**
  * Main Class of the Guns In The Future game.
@@ -16,9 +18,11 @@ import gitf.system.game.victory.Deathmatch;;
  */
 public class Run 
 {
-	private static int numberGames = 1;				// number of games in the simulation
-	private static boolean drawGraph = false;		// whether to draw a frequency distribution of game length at the end of the simulation
-	private static int numberCharacters = 3;		// the number of characters in the simulation
+	private static GUI gui = new GitfGUI();										// the GUI for the game
+	private static int numberGames = 1;											// number of games in the simulation
+	private static boolean drawGraph = false;									// whether to draw a frequency distribution of game length at the end of the simulation
+	private static int numberCharacters = 2;									// the number of characters in the simulation
+	private static int gameSpeed = 10;											// the delay between turns and actions
 	
 	private static ArrayList<Integer> metrics = new ArrayList<Integer>(0);		// frequency distribution of game lengths
 	
@@ -43,6 +47,7 @@ public class Run
 			
 			StandardGame game = new StandardGame(characters);
 			game.setVictoryConditions(new Deathmatch(game));
+			game.setGameSpeed(gameSpeed);
 			game.start();
 			
 			int length = game.getLength();
@@ -66,5 +71,9 @@ public class Run
 			for (int j = 0; j < input.get(i); j++) System.out.print("=");
 			System.out.println();
 		}
+	}
+	
+	public static GUI getGUI() {
+		return gui;
 	}
 }

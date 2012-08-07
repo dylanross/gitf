@@ -73,6 +73,9 @@ public abstract class ResponderHub implements ActionResponder
 	public void respondToAction(AttackAction attackAction) { 
 		passToResponders(attackAction);
 	}
+	public void respondToAction(DiceRollAction diceRollAction) {
+		passToResponders(diceRollAction);
+	}
 	public void respondToAction(ItemAction itemAction) { 
 		passToResponders(itemAction);
 	}
@@ -99,6 +102,9 @@ public abstract class ResponderHub implements ActionResponder
 	}
 	public void passToResponders(AttackAction attackAction) { 
 		for (int i = 0; i < responders.size(); i++) responders.get(i).respondToAction(attackAction);
+	}
+	public void passToResponders(DiceRollAction diceRollAction) {
+		for (int i = 0; i < responders.size(); i++) responders.get(i).respondToAction(diceRollAction);
 	}
 	public void passToResponders(ItemAction itemAction) { 
 		for (int i = 0; i < responders.size(); i++) responders.get(i).respondToAction(itemAction);
@@ -127,12 +133,6 @@ public abstract class ResponderHub implements ActionResponder
 	public void setResponders(ArrayList<ActionResponder> responders) {
 		this.responders = responders;
 	}
-	
-	/*public <T extends ActionResponder> void setResponders(ArrayList<T> responders)
-	{
-		this.responders = new ArrayList<ActionResponder>(0);
-		responders.addAll(responders);
-	}*/
 	
 	public void setResponders(ActionResponder responder)
 	{

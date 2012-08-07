@@ -17,6 +17,9 @@ public class TestResponder implements ActionResponder
 	public void respondToAction(AttackAction action) { 
 		System.out.println("I was given : " + action.getClass().getName());
 	}
+	public void respondToAction(DiceRollAction action) { 
+		System.out.println("I was given : " + action.getClass().getName());
+	}
 	public void respondToAction(ItemAction action) { 
 		System.out.println("I was given : " + action.getClass().getName());
 	}

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import gitf.system.player.Player;
 import gitf.system.character.Charac;
-import gitf.system.game.VictoryConditions;
+import gitf.system.game.victory.VictoryConditions;
 
 public interface Game 
 {
@@ -16,4 +16,10 @@ public interface Game
 	public void start();
 	public void pause();
 	public void stop();
+	
+	public int getGameSpeed();
+	public void setGameSpeed(int gameSpeed);
+	
+	public void printlnToAll();
+	public void printlnToAll(String content);
 }

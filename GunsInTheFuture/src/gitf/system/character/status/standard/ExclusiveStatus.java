@@ -1,11 +1,11 @@
-package gitf.system.character.status;
+package gitf.system.character.status.standard;
 
 import java.util.ArrayList;
 
 import gitf.system.action.Action;
 import gitf.system.action.responder.IgnoreResponder;
 import gitf.system.character.Charac;
-import gitf.system.character.status.standard.StandardDead;
+import gitf.system.character.status.Status;
 
 /**
  * Superclass of any Status that only allows one of its Class to be stored

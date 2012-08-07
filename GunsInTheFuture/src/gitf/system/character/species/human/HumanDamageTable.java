@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import gitf.system.action.standard.StandardDrop;
 import gitf.system.character.Charac;
-import gitf.system.character.status.DamageTable;
+import gitf.system.character.DamageTable;
 import gitf.system.character.status.standard.*;
 import gitf.system.character.status.standard.StandardStance.StanceType;
 import gitf.system.dice.StandardDiceRoll;

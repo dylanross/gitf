@@ -60,6 +60,15 @@ public class PropertyListResponder<OwnerType, ElementType extends ActionResponde
 	}
 	
 	/**
+	 * Removes the element at the specified index.
+	 */
+	public void remove(int index)
+	{
+		elements.remove(index);		// remove the element at the index
+		updateResponders();			// update all responders
+	}
+	
+	/**
 	 * Sets the element at the given index. It is better to use add() since this
 	 * does not allow duplicate Objects.
 	 */
@@ -75,6 +84,14 @@ public class PropertyListResponder<OwnerType, ElementType extends ActionResponde
 	public ElementType get(int index)
 	{
 		return elements.get(index);
+	}
+	
+	/**
+	 * Returns the size of the elements array.
+	 */
+	public int size()
+	{
+		return elements.size();
 	}
 	
 	/**

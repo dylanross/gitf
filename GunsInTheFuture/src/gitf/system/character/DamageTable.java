@@ -1,6 +1,5 @@
-package gitf.system.character.status;
+package gitf.system.character;
 
-import gitf.system.character.Charac;
 
 /**
  * Interface to a damage table.

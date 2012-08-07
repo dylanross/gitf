@@ -7,11 +7,11 @@ import gitf.system.map.Area;
 public class StandardMove implements MoveAction
 {
 	private String name = "Move";
-	private Charac mover;
+	private String report;
+	private boolean preAction = true;
 	private int actionCost;
 	
-	private boolean preAction = true;
-	
+	private Charac mover;
 	private Area origin;
 	private Area destination;
 	
@@ -32,35 +32,32 @@ public class StandardMove implements MoveAction
 		System.out.println(mover.getName() + " moved from " + origin.getName() + " to " + destination.getName());
 	}
 	
-	public String getName()
-	{
+	public String getName() {
 		return name;
 	}
-	
-	public Charac getMover()
-	{
-		return mover;
+	public String getReport() {
+		return report;
 	}
-	
-	public Area getOrigin()
-	{
-		return origin;
+	public void setReport(String report) {
+		this.report = report;
 	}
-	
-	public Area getDestination()
-	{
-		return destination;
-	}
-	
 	public boolean isPreAction() {
 		return preAction;
 	}
-	
 	public int getActionCost() {
 		return actionCost;
 	}
-	
 	public void setActionCost(int actionCost) {
 		this.actionCost = actionCost;
+	}
+	
+	public Charac getMover() {
+		return mover;
+	}
+	public Area getOrigin() {
+		return origin;
+	}
+	public Area getDestination() {
+		return destination;
 	}
 }

@@ -8,10 +8,12 @@ import gitf.system.item.Item;
 public class StandardReload implements PersonalAction, ItemAction
 {
 	private String name = "Reload";
+	private String report;
+	private boolean preAction = true;
+	private int actionCost;
+	
 	private Charac charac;
 	private Item item;
-	private int actionCost;
-	private boolean preAction = true;
 	
 	public StandardReload(Charac charac, Item item)
 	{
@@ -36,24 +38,26 @@ public class StandardReload implements PersonalAction, ItemAction
 	public String getName() {
 		return name;
 	}
+	public String getReport() {
+		return report;
+	}
+	public void setReport(String report) {
+		this.report = report;
+	}
+	public boolean isPreAction() {
+		return preAction;
+	}
+	public int getActionCost() {
+		return actionCost;
+	}
+	public void setActionCost(int actionCost) {
+		this.actionCost = actionCost;
+	}
 	
 	public Charac getCharac() {
 		return charac;
 	}
-	
 	public Item getItem() {
 		return item;
-	}
-	
-	public boolean isPreAction() {
-		return preAction;
-	}
-	
-	public int getActionCost() {
-		return actionCost;
-	}
-	
-	public void setActionCost(int actionCost) {
-		this.actionCost = actionCost;
 	}
 }

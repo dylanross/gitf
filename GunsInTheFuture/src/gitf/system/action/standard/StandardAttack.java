@@ -6,6 +6,7 @@ import gitf.system.dice.DiceRoll;
 import gitf.system.dice.StandardDiceRoll;
 import gitf.system.item.Item;
 import gitf.system.item.Weapon;
+import gitf.system.game.Game;
 import gitf.system.map.Map;
 import gitf.system.map.Area;
 
@@ -53,12 +54,12 @@ public class StandardAttack implements AttackAction
 	{	
 		Area fromArea = attacker.getCurrentArea();
 		Area toArea = defender.getCurrentArea();
-		Map map = fromArea.getMap();															// retrieve the map the attacker exists in 
-		if (map == defender.getCurrentArea().getMap() && map.getLineOfSight(fromArea, toArea))	// ensure attacker and defender on same map, and that there is LoS
+		Map map = fromArea.getMap();																// retrieve the map the attacker exists in 
+		if (map == defender.getCurrentArea().getMap() && map.getLineOfSight(fromArea, toArea))		// ensure attacker and defender on same map, and that there is LoS
 		{
-			range = map.getDistance(fromArea, toArea);					// determine range between attacker and defender
+			range = map.getDistance(fromArea, toArea);												// determine range between attacker and defender
 			
-			if (range > weapon.getRange() * 2 == false)					// ensure defender within range of attacker
+			if (range > weapon.getRange() * 2 == false)												// ensure defender within range of attacker
 			{
 				toHitChance = attacker.getAttributes().getAttribute(weapon.getTestedAttribute()); 	// store attribute that determines toHit roll
 				
@@ -70,17 +71,17 @@ public class StandardAttack implements AttackAction
 				damageRoll = weapon.getDamage();													// find damage roll and store
 				
 				preAction = true;
-				attacker.respondToAction(this);								// allow the attacker to modify this action's details pre-attack
-				defender.respondToAction(this);								// allow the defender to modify this action's details pre-attack
+				attacker.respondToAction(this);														// allow the attacker to modify this action's details pre-attack
+				defender.respondToAction(this);														// allow the defender to modify this action's details pre-attack
 				
-				toHitResult = toHitRoll.roll();											// determine to hit roll
-				locationRollResult = locationRoll.roll();								// determine location hit (int)
-				locationResult = defender.getHealth().getLocation(locationRollResult);	// determine location hit (Enum)
-				damageResult = damageRoll.roll();										// determine damage result
+				toHitResult = toHitRoll.roll();														// determine to hit roll
+				locationRollResult = locationRoll.roll();											// determine location hit (int)
+				locationResult = defender.getHealth().getLocation(locationRollResult);				// determine location hit (Enum)
+				damageResult = damageRoll.roll();													// determine damage result
 				
 				preAction = false;
-				attacker.respondToAction(this);								// allow the attacker to modify this action's details post-attack
-				defender.respondToAction(this);								// allow the defender to modify this action's details post-attack
+				attacker.respondToAction(this);														// allow the attacker to modify this action's details post-attack
+				defender.respondToAction(this);														// allow the defender to modify this action's details post-attack
 				
 				if (toHitResult <= toHitChance)																	// check if the attacker hit, then :
 				{
@@ -93,13 +94,14 @@ public class StandardAttack implements AttackAction
 							 "the " + locationResult + " (" + locationRollResult + ") for " +
 							 damageLevels + " damage levels (" + damageResult + ")!";
 					
-					report();
-					
 					int totalDamage = defender.getHealth().getLocationDamage(locationResult) + damageLevels;	// add this to the amount of damage already sustained
 					defender.getHealth().setLocationDamage(locationResult, totalDamage);						// set the defender's health appropriately
+					
+					report();																					// report now, so that damage effects follow report
+					
 					defender.getDamageTable().causeEffect(defender, locationResult, totalDamage);				// cause any adverse effects of this new level of damage
 					
-					attacker.setActionsRemaining(attacker.getActionsRemaining() - actionCost);
+					attacker.setActionsRemaining(attacker.getActionsRemaining() - actionCost);					// deduct the actions
 				}
 				else	// if attacker missed :
 				{
@@ -125,15 +127,12 @@ public class StandardAttack implements AttackAction
 	
 	public void report()
 	{
-		System.out.println(report);
-		System.out.println();
-		System.out.println("--- defender status ---");
-		defender.healthReport();
-		defender.statusReport();
-		System.out.println("--- defender equipped ---");
-		defender.equippedReport();
-		System.out.println("--- defender inventory ---");
-		defender.inventoryReport();
+		Game game = attacker.getPlayer().getGame();
+		game.printlnToAll(report);
+		String attackerSheet = attacker.getCharacterSheetGenerator().buildCharacterSheet(attacker);
+		attacker.getPlayer().getGUI().printCharacterSheet(attackerSheet);
+		String defenderSheet = defender.getCharacterSheetGenerator().buildCharacterSheet(defender);
+		defender.getPlayer().getGUI().printCharacterSheet(defenderSheet);
 	}
 	
 	/**

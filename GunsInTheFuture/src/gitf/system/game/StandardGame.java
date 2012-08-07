@@ -2,7 +2,9 @@ package gitf.system.game;
 
 import java.util.ArrayList;
 
+import gitf.gui.GUI;
 import gitf.system.character.Charac;
+import gitf.system.game.victory.VictoryConditions;
 import gitf.system.player.Player;
 import gitf.system.map.Map;
 import gitf.system.map.TestMap;
@@ -12,6 +14,7 @@ public class StandardGame implements Game
 	private ArrayList<Player> players;
 	private ArrayList<Charac> characters;
 	private StandardTurnSequence turnSequence;
+	private int gameSpeed = 10; 									// longer is slower (turn speed in ms)
 	
 	private Map map;
 	
@@ -24,10 +27,12 @@ public class StandardGame implements Game
 	
 	private int counter = 0;
 	
+	private String nL = System.getProperty("line.separator");		// the sequence of characters used to 
+																	// designate a new line on the host's OS
+	
 	public StandardGame(ArrayList<Charac> characters)
 	{
 		this.map = new TestMap();
-		this.victoryConditions = victoryConditions;
 		this.characters = characters;
 		players = new ArrayList<Player>(0);
 		for (int i = 0; i < characters.size(); i++)
@@ -48,29 +53,28 @@ public class StandardGame implements Game
 		turnSequence = new StandardTurnSequence(characters);
 		turnSequence.order();
 		
-		System.out.println("New game created for : ");
-		for (int i = 0; i < characters.size(); i++) System.out.println(players.get(i).getName());
-		System.out.println();
+		printlnToAll("New game created for : ");
+		for (int i = 0; i < characters.size(); i++) printlnToAll(players.get(i).getName());
+		printlnToAll();
 		
-		System.out.println("Characters (in Aw order) : ");
+		printlnToAll("Characters (in Aw order) : ");
 		ArrayList<Charac> characterSequence = turnSequence.getTurnSequence();
 		for (int i = 0; i < characterSequence.size(); i++)
 		{
-			System.out.println(characterSequence.get(i).getName());
+			printlnToAll(characterSequence.get(i).getName());
 		}
 		
 	}
 	
 	public void start()
 	{
-		System.out.println();
-		System.out.println("GAME STARTED");
+		printlnToAll();
+		printlnToAll("--- GAME STARTED");
+		printlnToAll();
 		
 		while(end == false)
 		{
-			System.out.println();
-			System.out.println("Game turn " + (counter + 1) +" :");
-			System.out.println();
+			printlnToAll("Game turn " + (counter + 1) + " :");
 			
 			boolean gameTurnComplete = false;
 			
@@ -78,8 +82,8 @@ public class StandardGame implements Game
 			
 			while (gameTurnComplete == false && end == false)
 			{
-				try { Thread.sleep(100); }
-				catch (InterruptedException ie) { System.out.println(ie.getMessage()); }
+				try { Thread.sleep(gameSpeed); }
+				catch (InterruptedException ie) { printlnToAll(ie.getMessage()); }
 				
 				if (paused == false)
 				{
@@ -102,24 +106,46 @@ public class StandardGame implements Game
 			turnSequence.order();
 			counter++;
 			
-			System.out.println("--- end of game turn ---");
+			printlnToAll("--- end of game turn " + (counter + 1));
+			printlnToAll();
 		}
 		
-		System.out.println();
-		victoryConditions.report();
-		System.out.println();
-		System.out.println("Game lasted " + counter + " turns.");
+		printlnToAll(victoryConditions.report());
+		printlnToAll("Game lasted " + counter + " turns.");
 	}
 	
 	public void pause()
 	{
-		System.out.println("The game has been paused.");
+		printlnToAll("The game has been paused.");
 		paused = true;
 	}
 	
 	public void stop()
 	{
 		end = true;
+	}
+	
+	public void printlnToAll()
+	{
+		printlnToAll("" + nL);
+	}
+	
+	public void printlnToAll(String content)
+	{
+		ArrayList<GUI> usedGUIs = new ArrayList<GUI>(0);
+		
+		for (int i = 0; i < players.size(); i++)
+		{
+			if (usedGUIs.contains(players.get(i).getGUI()))
+			{
+				
+			}
+			else
+			{
+				players.get(i).getGUI().println(content);
+				usedGUIs.add(players.get(i).getGUI());
+			}
+		}
 	}
 	
 	/**
@@ -144,5 +170,13 @@ public class StandardGame implements Game
 	
 	public int getLength() {
 		return counter;
+	}
+	
+	public int getGameSpeed() {
+		return gameSpeed;
+	}
+	
+	public void setGameSpeed(int gameSpeed) {
+		this.gameSpeed = gameSpeed;
 	}
 }

@@ -11,10 +11,11 @@ import gitf.system.action.*;
  * @author dylanross
  *
  */
-public abstract class IgnoreResponder 
+public abstract class IgnoreResponder implements ActionResponder
 {
 	public void respondToAction(Action action) {  }
 	public void respondToAction(AttackAction attackAction) {  }
+	public void respondToAction(DiceRollAction diceRollAction) {  }
 	public void respondToAction(ItemAction itemAction) {  }
 	public void respondToAction(MoveAction moveAction) {  }
 	public void respondToAction(PersonalAction personalAction) {  }

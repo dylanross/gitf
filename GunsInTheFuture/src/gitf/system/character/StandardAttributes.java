@@ -26,6 +26,9 @@ public class StandardAttributes implements Attributes
 	
 	private int[] attributes = new int[10];
 	
+	private String nL = System.getProperty("line.separator");	// the sequence of characters used to 
+																// designate a new line on the host's OS
+	
 	/**
 	 * 0 argument constructor. Sets attributes to 0.
 	 */
@@ -124,24 +127,34 @@ public class StandardAttributes implements Attributes
 		{
 			case WEAPON_SKILL :
 				setWeaponSkill(attributeValue);
+				break;
 			case BALLISTIC_SKILL :
 				setBallisticSkill(attributeValue);
+				break;
 			case STRENGTH :
 				setStrength(attributeValue);
+				break;
 			case TOUGHNESS :
 				setToughness(attributeValue);
+				break;
 			case AGILITY :
-				setAwareness(attributeValue);
+				setAgility(attributeValue);
+				break;
 			case AWARENESS :
 				setAwareness(attributeValue);
+				break;
 			case INTELLIGENCE :
 				setIntelligence(attributeValue);
+				break;
 			case NERVE :
 				setNerve(attributeValue);
+				break;
 			case CHARISMA :
 				setCharisma(attributeValue);
+				break;
 			case SPEED :
 				setSpeed(attributeValue);
+				break;
 			default :
 				break;
 		}
@@ -176,5 +189,19 @@ public class StandardAttributes implements Attributes
 	}
 	public void setSpeed(int speed) {
 		attributes[9] = speed;
+	}
+	
+	public String report()
+	{
+		String report = " WS | BS | S  | T  | Ag | Aw | In | Nv | Ch | Sp |" + nL;
+		
+		for (int i = 0; i < AttributeName.values().length; i++)
+		{
+			int attributeValue = getAttribute(AttributeName.values()[i]);
+			if (attributeValue > 9 || attributeValue < -9) report += " " + attributeValue + " |";
+			else report += "  " + attributeValue + " |";
+		}
+		
+		return report;
 	}
 }

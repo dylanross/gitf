@@ -6,7 +6,6 @@ import gitf.system.action.Action;
 import gitf.system.action.standard.StandardAttack;
 import gitf.system.character.Charac;
 import gitf.system.character.status.Stance;
-import gitf.system.character.status.ExclusiveStatus;
 import gitf.system.character.status.Status;
 
 public class StandardStance extends ExclusiveStatus implements Stance

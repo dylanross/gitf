@@ -54,9 +54,15 @@ public class Deathmatch implements VictoryConditions
 		}
 	}
 	
-	public void report()
+	public String report()
 	{
-		System.out.println("VICTORY! The last man standing was " + lastManStanding.getName() + " (" + lastManStanding.getPlayer().getName() + ") " +
-						   "who defeated " + numberIncapacitated + " enemies.");
+		try
+		{
+			return "VICTORY! The last man standing was " + lastManStanding.getName() + " (" + lastManStanding.getPlayer().getName() + ") " + "who defeated " + numberIncapacitated + " enemies.";
+		}
+		catch (NullPointerException npE)
+		{
+			return "No winner this time!";
+		}
 	}
 }

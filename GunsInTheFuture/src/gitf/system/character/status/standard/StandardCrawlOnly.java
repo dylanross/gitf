@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import gitf.system.character.Charac;
 import gitf.system.character.status.MovementRestriction;
-import gitf.system.character.status.ExclusiveStatus;
 import gitf.system.character.status.Status;
 import gitf.system.character.status.standard.StandardStance.StanceType;
 

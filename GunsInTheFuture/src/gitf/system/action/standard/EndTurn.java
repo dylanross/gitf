@@ -15,13 +15,14 @@ import gitf.system.character.Charac;
  */
 public class EndTurn implements TurnAction
 {
-	public String name = "End Turn";				// name of the action
-	private Charac charac;							// the character to query
+	private String name = "End Turn";				// name of the action
+	String report;
+	private boolean preAction;						// whether the action has been performed yet
 	private int actionCost = 0;						// the cost to perform this action
 	
-	private boolean preAction;						// whether the action has been performed yet
-	
-	private boolean endTurn;						// whether the turn should end after execution of this action
+	private Charac charac;							// the character to query
+	private boolean newTurn = false;				// this action does not propose the start of a new turn
+	private boolean endTurn = true;					// this action proposes the end of the current turn
 	
 	/**
 	 * One argument (Charac) constructor. Specifies the character to whom
@@ -56,8 +57,8 @@ public class EndTurn implements TurnAction
 		if (endTurn == true) reportString = "ended the turn";									// set reportString
 		else reportString = "did not end the turn";												// set reportString
 
-		System.out.println(charac.getName() + " " + reportString);								// output report
-		System.out.println();
+		charac.getPlayer().getGame().printlnToAll(charac.getName() + " " + reportString);		// output report to everyone
+		charac.getPlayer().getGame().printlnToAll();
 	}
 	
 	/**
@@ -67,28 +68,35 @@ public class EndTurn implements TurnAction
 	public String getName() {
 		return name;
 	}
-	public Charac getCharac() {
-		return charac;
-	}
 	public boolean isPreAction() {
 		return preAction;
 	}
-	public boolean isEndTurn() {
-		return endTurn;
+	public String getReport() {
+		return report;
 	}
-	public boolean isNewTurn() {
-		return false;
-	}
-	public void setEndTurn(boolean endTurn) {
-		this.endTurn = endTurn;
-	}
-	public void setNewTurn(boolean newTurn) {
-		// do nothing - EndTurns can never signify a new turn's beginning
+	public void setReport(String report) {
+		this.report = report;
 	}
 	public int getActionCost() {
 		return actionCost;
 	}
 	public void setActionCost(int actionCost) {
 		this.actionCost = actionCost;
+	}
+	
+	public Charac getCharac() {
+		return charac;
+	}
+	public boolean isEndTurn() {
+		return endTurn;
+	}
+	public boolean isNewTurn() {
+		return newTurn;
+	}
+	public void setEndTurn(boolean endTurn) {
+		this.endTurn = endTurn;
+	}
+	public void setNewTurn(boolean newTurn) {
+		this.newTurn = newTurn;
 	}
 }

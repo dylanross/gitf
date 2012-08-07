@@ -5,4 +5,5 @@ public interface Area
 	public String getName();
 	public Map getMap();
 	public int[] getCoordinates();
+	public boolean isPassable();
 }

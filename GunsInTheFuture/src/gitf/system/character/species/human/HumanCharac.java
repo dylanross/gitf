@@ -2,6 +2,7 @@ package gitf.system.character.species.human;
 
 import java.util.ArrayList;
 
+import gitf.system.Run;
 import gitf.system.action.TurnAction;
 import gitf.system.action.standard.StandardActionRoll;
 import gitf.system.action.responder.ActionResponder;
@@ -9,15 +10,15 @@ import gitf.system.action.responder.PropertyListResponder;
 import gitf.system.action.responder.ResponderHub;
 import gitf.system.character.Charac;
 import gitf.system.character.Attributes;
+import gitf.system.character.DamageTable;
 import gitf.system.character.StandardAttributes;
 import gitf.system.character.Equipped;
 import gitf.system.character.Health;
-import gitf.system.character.status.DamageTable;
+import gitf.system.character.CharacterSheetGenerator;
 import gitf.system.character.status.Status;
 import gitf.system.character.status.Dead;
 import gitf.system.character.status.Unconscious;
 import gitf.system.character.status.Down;
-import gitf.system.character.status.Stunned;
 import gitf.system.character.status.standard.StandardStance;
 import gitf.system.character.status.standard.StandardStance.StanceType;
 import gitf.system.character.feat.Feat;
@@ -57,6 +58,8 @@ public class HumanCharac extends ResponderHub implements Charac<HumanLocation>
 	
 	private Area currentArea;									// the area the character currently occupies
 	
+	private CharacterSheetGenerator characterSheetGenerator;	// an Object that can be used to generate a character sheet for this Charac
+	
 	/**
 	 * Zero argument constructor. Produces generic human character
 	 * with no equipment and no wounds. The character produced is a bot -
@@ -66,11 +69,11 @@ public class HumanCharac extends ResponderHub implements Charac<HumanLocation>
 	{
 		name = HumanNameGenerator.generate();													// set to random name
 		player = new BotPlayer();																// give character a Bot player
+		getPlayer().setGUI(Run.getGUI());														// set to GUI
 		
 		ArrayList<ActionResponder> responders = new ArrayList<ActionResponder>(0);				// create ArrayList to hold responders
 		
 		intelCore = new StandardBot(this);														// give character a standard Bot intelligence core
-		responders.add(intelCore);
 		try 
 		{
 			attributes = new StandardAttributes(new int[] { 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 });	// set all attributes to 4
@@ -78,13 +81,16 @@ public class HumanCharac extends ResponderHub implements Charac<HumanLocation>
 		catch (Exception e) { }
 		health = new HumanHealth(0, 0, 0, 0);												// sets all damage levels to 0
 		feats = new PropertyListResponder<Charac, Feat>(this);								// creates empty feats list
-		responders.add(feats);
 		status = new PropertyListResponder<Charac, Status>(this);							// creates empty status lists
-		responders.add(status);
 		inventory = new PropertyListResponder<Charac, Item>(this);							// creates empty inventory
-		responders.add(inventory);
 		equipped = new HumanEquipped(this);													// creates empty equipped
+		characterSheetGenerator = new HumanCharacterSheetGenerator();
+		
 		responders.add(equipped);
+		responders.add(feats);
+		responders.add(status);
+		responders.add(inventory);
+		responders.add(intelCore);
 		
 		setResponders(responders);
 		
@@ -102,8 +108,10 @@ public class HumanCharac extends ResponderHub implements Charac<HumanLocation>
 		
 		if (action.isNewTurn())
 		{
-			new StandardActionRoll(this).execute();				// roll for actions
+			new StandardActionRoll(this).execute();
 		}
+		
+		getPlayer().getGUI().printCharacterSheet(characterSheetGenerator.buildCharacterSheet(this));
 	}
 	
 	/**
@@ -146,7 +154,7 @@ public class HumanCharac extends ResponderHub implements Charac<HumanLocation>
 		return name;
 	}
 	
-	
+	@Deprecated
 	public boolean isIncapacitated() 
 	{
 		boolean result = false;
@@ -155,8 +163,7 @@ public class HumanCharac extends ResponderHub implements Charac<HumanLocation>
 		{
 			if (status.getContents().get(i) instanceof Dead ||
 				status.getContents().get(i) instanceof Unconscious ||
-				status.getContents().get(i) instanceof Down ||
-				status.getContents().get(i) instanceof Stunned)
+				status.getContents().get(i) instanceof Down)
 			{
 				result = true;
 			}
@@ -210,5 +217,10 @@ public class HumanCharac extends ResponderHub implements Charac<HumanLocation>
 	}
 	public void setCurrentArea(Area currentArea) {
 		this.currentArea = currentArea;
+	}
+	
+	public CharacterSheetGenerator getCharacterSheetGenerator()
+	{
+		return characterSheetGenerator;
 	}
 }

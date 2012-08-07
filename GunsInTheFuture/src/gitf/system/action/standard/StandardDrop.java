@@ -8,10 +8,12 @@ import gitf.system.item.Item;
 public class StandardDrop implements PersonalAction, ItemAction
 {
 	private String name = "Drop";
+	private String report;
+	private boolean preAction = false;
+	private int actionCost = 0;
+	
 	private Charac charac;
 	private Item item;
-	private int actionCost = 0;
-	private String report;
 	
 	public StandardDrop(Charac charac, Item item)
 	{
@@ -26,23 +28,20 @@ public class StandardDrop implements PersonalAction, ItemAction
 	}
 	
 	public void report() {
-		System.out.println(report);
+		charac.getPlayer().getGUI().println(report);
 	}
 	
 	public String getName() {
 		return name;
 	}
-	
-	public Charac getCharac() {
-		return charac;
+	public String getReport() {
+		return report;
 	}
-	
-	public Item getItem() {
-		return item;
+	public void setReport(String report) {
+		this.report = report;
 	}
-	
 	public boolean isPreAction() {
-		return false;
+		return preAction;
 	}
 	
 	public int getActionCost() {
@@ -51,5 +50,12 @@ public class StandardDrop implements PersonalAction, ItemAction
 	
 	public void setActionCost(int actionCost) {
 		this.actionCost = actionCost;
+	}
+	
+	public Charac getCharac() {
+		return charac;
+	}
+	public Item getItem() {
+		return item;
 	}
 }

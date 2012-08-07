@@ -1,11 +1,9 @@
 package gitf.system.character.status.standard;
 
-import java.util.ArrayList;
-
-import gitf.system.action.Action;
-import gitf.system.action.standard.StandardAttack;
+import gitf.system.action.AttackAction;
+import gitf.system.action.TurnAction;
+import gitf.system.action.responder.PropertyList;
 import gitf.system.character.Charac;
-import gitf.system.character.status.ExclusiveStatus;
 import gitf.system.character.status.Status;
 import gitf.system.character.status.Stance;
 import gitf.system.character.status.Dead;
@@ -20,21 +18,31 @@ public class StandardDead extends ExclusiveStatus implements Dead
 		super(owner);
 	}
 	
-	public void respondToAction(Action action)
+	/**
+	 * Any attacks against a Dead character get a +3 chance to hit.
+	 */
+	@Override
+	public void respondToAction(AttackAction attackAction)
 	{
-		if (action instanceof StandardAttack)
+		if (attackAction.isPreAction())									// if the attack is yet to be performed :
 		{
-			StandardAttack standardAttackAction = (StandardAttack) action;
-			if (standardAttackAction.isPreAction())
+			if (getOwner() == attackAction.getDefender())				// if the owner of this dead status is the defender in the attack :
 			{
-				if (getOwner() == standardAttackAction.getDefender())
-				{
-					int toHitChance = standardAttackAction.getToHitChance();
-					standardAttackAction.setToHitChance(toHitChance + 3);
-				}
+				int toHitChance = attackAction.getToHitChance();		// get the attack's to hit chance
+				attackAction.setToHitChance(toHitChance + 3);			// increase hit chance by 3 then set
 			}
 		}
+	}
 	
+	/**
+	 * All turn actions are set to deny start of a new turn and 
+	 * ask for end of the current turn.
+	 */
+	@Override
+	public void respondToAction(TurnAction turnAction)
+	{
+		if (turnAction.isNewTurn()) turnAction.setNewTurn(false);		// do not allow new turns to start when dead
+		if (! turnAction.isEndTurn()) turnAction.setEndTurn(true);		// ask to end the turn
 	}
 	
 	/**
@@ -43,21 +51,19 @@ public class StandardDead extends ExclusiveStatus implements Dead
 	 */
 	public void addToOwner()
 	{
-		ArrayList<Status> status = getOwner().getStatus().getContents();
-		boolean incapable = false;
+		PropertyList<Charac, Status> status = getOwner().getStatus();
+		
 		for (int i = 0; i < status.size(); i++)
 		{
-			if (status.get(i) instanceof Status && status.get(i) instanceof Stance == false)
+			if (status.get(i) instanceof Stance == false)
 			{
-				status.remove(i);
+				status.get(i).removeFromOwner();
 				i--;
 			}
 		}
-		if (incapable == false)
-		{
-			status.add(this);
-			new StandardStance(getOwner(), StanceType.PRONE).addToOwner();
-		}
+		
+		status.add(this);
+		new StandardStance(getOwner(), StanceType.PRONE).addToOwner();
 	}
 	
 	public String getName()

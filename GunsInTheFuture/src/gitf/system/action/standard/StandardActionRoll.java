@@ -10,17 +10,16 @@ import gitf.system.dice.StandardDiceRoll;
 public class StandardActionRoll implements DiceRollAction
 {
 	private String name = "Action Roll";						// the name of the action
-	private Charac charac;										// the charac who is rolling for actions
+	private String report;
+	private boolean preAction;									// whether the action is yet to be performed
 	private int actionCost = 0;									// this action costs nothing to perform
+	
+	private Charac charac;										// the charac who is rolling for actions
+	private StandardDiceRoll diceRoll;							// the action dice pool
 	private AttributeName attributeName = AttributeName.SPEED;	// the roll is based on Speed
 	
-	private StandardDiceRoll diceRoll;							// the action dice pool
 	private int threshold = 5;									// actions are awarded for dice with results equal to or higher than this number
-	
-	private boolean preAction;									// whether the action is yet to be performed
-	
 	private ArrayList<Integer> result;							// a list of the dice pool results
-	
 	private int numberOfActions = 0;							// the number of actions allowed by this dice roll
 	
 	/**
@@ -29,9 +28,9 @@ public class StandardActionRoll implements DiceRollAction
 	 */
 	public StandardActionRoll(Charac charac)
 	{
-		this.charac = charac;								// assign charac
-		int speed = charac.getAttributes().getSpeed();		// store speed of the charac
-		diceRoll = new StandardDiceRoll(speed, 10);			// form d10 dice pool with size equal to charac's speed
+		this.charac = charac;									// assign charac
+		int speed = charac.getAttributes().getSpeed();			// store speed of the charac
+		diceRoll = new StandardDiceRoll(speed, 10);				// form d10 dice pool with size equal to charac's speed
 	}
 	
 	/**
@@ -69,7 +68,8 @@ public class StandardActionRoll implements DiceRollAction
 		String report = charac.getName() + " rolled " + numberOfActions;	// start report String
 		if (numberOfActions != 1) report += " actions!";					// if plural is needed
 		else report += " action!";											// if plural is not needed
-		System.out.println(report);											// print the report
+		
+		charac.getPlayer().getGUI().println(report);					// print the report
 	}
 	
 	/**
@@ -79,27 +79,28 @@ public class StandardActionRoll implements DiceRollAction
 	public String getName() {
 		return name;
 	}
-	
-	public Charac getCharac() {
-		return charac;
+	public String getReport() {
+		return report;
 	}
-
-	public StandardDiceRoll getDiceRoll() {
-		return diceRoll;
+	public void setReport(String report) {
+		this.report = report;
 	}
-
 	public boolean isPreAction() {
 		return preAction;
 	}
-	
 	public int getActionCost() {
 		return actionCost;
 	}
-	
 	public void setActionCost(int actionCost) {
 		this.actionCost = actionCost;
 	}
 	
+	public Charac getCharac() {
+		return charac;
+	}
+	public StandardDiceRoll getDiceRoll() {
+		return diceRoll;
+	}
 	public AttributeName getAttributeName() {
 		return attributeName;
 	}
